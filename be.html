@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHMED TV | Full beIN Pack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ios-blur: blur(25px);
+            --ios-bg: rgba(255, 255, 255, 0.08);
+            --ios-border: rgba(255, 255, 255, 0.12);
+            --accent: #007aff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Readex Pro', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #1c2c4c 0%, #000 80%);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: var(--ios-blur); -webkit-backdrop-filter: var(--ios-blur);
+            padding: 15px 20px; border-bottom: 0.5px solid var(--ios-border);
+            text-align: center;
+        }
+        .brand-name { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+        .brand-name span { color: var(--accent); text-shadow: 0 0 15px rgba(0, 122, 255, 0.5); }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 10px 15px;
+            display: flex; align-items: center; gap: 10px;
+            border: 0.5px solid var(--ios-border);
+        }
+        .search-container input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
+
+        /* Container */
+        .container { padding: 140px 15px 120px; max-width: 600px; margin: 0 auto; }
+        .section-label { font-size: 18px; font-weight: 600; margin: 25px 5px 15px; color: rgba(255,255,255,0.6); }
+
+        /* Grid System */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .channel-card {
+            background: var(--ios-bg);
+            backdrop-filter: var(--ios-blur); -webkit-backdrop-filter: var(--ios-blur);
+            border: 1px solid var(--ios-border);
+            border-radius: 22px; padding: 15px;
+            text-align: center; text-decoration: none; color: white;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex; flex-direction: column; align-items: center;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .channel-card:active { transform: scale(0.92); background: rgba(255,255,255,0.15); }
+
+        .channel-icon {
+            width: 60px; height: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px; padding: 10px;
+            margin-bottom: 8px; border: 0.5px solid var(--ios-border);
+        }
+        .channel-name { font-size: 12px; font-weight: 500; }
+
+        /* Tab Bar */
+        .tab-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; height: 65px; background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: var(--ios-blur); border-radius: 30px;
+            border: 1px solid var(--ios-border);
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+        }
+        .tab-item { color: rgba(255,255,255,0.3); text-decoration: none; text-align: center; font-size: 11px; flex: 1; }
+        .tab-item i { font-size: 24px; display: block; margin-bottom: 4px; }
+        .tab-item.active { color: var(--accent); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-name">AHMED <span>TV</span></div>
+        <div class="search-container">
+            <i class="fas fa-search" style="opacity: 0.3"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن قناة..." onkeyup="search()">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="section-label">باقة beIN Sports</div>
+        <div class="channels-grid" id="grid">
+            <a href="go:be1" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 1 Prem</span></a>
+            <a href="go:be2" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 2 Prem</span></a>
+            <a href="go:be3" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 3 Prem</span></a>
+            <a href="go:be4" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 4</span></a>
+            <a href="go:be5" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 5</span></a>
+            <a href="go:be6" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 6</span></a>
+            <a href="go:be7" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 7</span></a>
+            <a href="go:be8" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 8</span></a>
+            <a href="go:be9" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 9</span></a>
+            <a href="go:news" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN News</span></a>
+        </div>
+    </div>
+
+    <nav class="tab-bar">
+        <a href="#" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="go:live" class="tab-item"><i class="fas fa-play-circle"></i><span>مباشر</span></a>
+        <a href="go:movies" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
+    </nav>
+
+    <script>
+        function search() {
+            let q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.channel-card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
