@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AHMED TV | Full Pro Edition</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ios-blur: blur(35px);
+      --ios-bg: rgba(255, 255, 255, 0.08);
+      --ios-border: rgba(255, 255, 255, 0.15);
+      --accent: #007aff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Readex Pro', sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #1a2a3a 0%, #000 100%);
+      overflow-x: hidden;
+    }
+
+    /* الهيدر الاحترافي */
+    header {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: var(--ios-blur);
+      -webkit-backdrop-filter: var(--ios-blur);
+      padding: 10px 20px 15px;
+      border-bottom: 0.5px solid var(--ios-border);
+    }
+
+    .brand-container { text-align: center; padding-bottom: 12px; }
+    .brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
+    .brand-name span { color: var(--accent); }
+
+    .search-container {
+      display: flex; align-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 14px; padding: 8px 15px;
+      border: 0.5px solid var(--ios-border);
+    }
+
+    .search-container input {
+      background: none; border: none; color: white; width: 100%;
+      outline: none; font-family: inherit; font-size: 15px; margin-right: 10px;
+    }
+
+    /* الحاوية الرئيسية */
+    .app-container { padding: 140px 20px 130px; max-width: 600px; margin: 0 auto; }
+
+    .section-label { font-size: 20px; font-weight: 600; margin: 30px 5px 15px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 10px; }
+    .section-label i { font-size: 16px; color: var(--accent); }
+
+    /* البطاقة الزجاجية */
+    .glass-card {
+      background: var(--ios-bg);
+      backdrop-filter: var(--ios-blur);
+      -webkit-backdrop-filter: var(--ios-blur);
+      border: 1px solid var(--ios-border);
+      border-radius: 25px;
+      padding: 18px; margin-bottom: 12px;
+      display: flex; align-items: center;
+      text-decoration: none; color: white;
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:active { transform: scale(0.96); background: rgba(255,255,255,0.15); }
+
+    .icon-wrapper {
+      width: 50px; height: 50px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: 15px; font-size: 20px; color: var(--accent);
+    }
+
+    .card-content h3 { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
+    .card-content p { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+    /* نافذة الحساب */
+    .login-sheet {
+      position: fixed; bottom: -100%; left: 0; width: 100%;
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: var(--ios-blur);
+      border-radius: 35px 35px 0 0;
+      padding: 40px 25px; z-index: 2000;
+      transition: bottom 0.5s cubic-bezier(0.32, 1, 0.23, 1);
+      border-top: 1px solid var(--ios-border);
+    }
+
+    .login-sheet.open { bottom: 0; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1500; display: none; backdrop-filter: blur(8px); }
+
+    .btn-auth {
+      width: 100%; padding: 16px; border-radius: 18px; border: none;
+      margin-bottom: 12px; font-weight: 600; display: flex; 
+      align-items: center; justify-content: center; gap: 12px;
+    }
+    .btn-google { background: #fff; color: #000; }
+    .btn-fb { background: #1877f2; color: #fff; }
+
+    /* التاب بار */
+    .tab-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 92%; height: 70px; background: rgba(25, 25, 25, 0.65);
+      backdrop-filter: var(--ios-blur); border-radius: 35px;
+      border: 1px solid var(--ios-border);
+      display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+    }
+
+    .tab-item { color: rgba(255,255,255,0.3); text-decoration: none; text-align: center; font-size: 10px; }
+    .tab-item i { font-size: 24px; display: block; margin-bottom: 4px; }
+    .tab-item.active { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="closeLogin()"></div>
+
+  <header>
+    <div class="brand-container"><div class="brand-name">AHMED <span>TV</span></div></div>
+    <div class="search-container">
+      <i class="fas fa-search" style="color: rgba(255,255,255,0.3);"></i>
+      <input type="text" id="searchInput" placeholder="بحث سريع..." onkeyup="searchContent()">
+    </div>
+  </header>
+
+  <main class="app-container">
+    
+    <div class="section-label"><i class="fas fa-trophy"></i> القنوات الرياضية</div>
+    <a href="go:be" class="glass-card content-item">
+      <div class="icon-wrapper"><i class="fas fa-satellite-dish"></i></div>
+      <div class="card-content"><h3>beIN Sports</h3><p>بث مباشر للدوريات الكبرى</p></div>
+    </a>
+    <a href="go:ssc" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #f8b229;"><i class="fas fa-bolt"></i></div>
+      <div class="card-content"><h3>SSC Pro</h3><p>الدوري السعودي للمحترفين</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-star"></i> الترفيه و VIP</div>
+    <a href="go:sh" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #00ffcc;"><i class="fas fa-crown"></i></div>
+      <div class="card-content"><h3>Shahid VIP</h3><p>حصريات شاهد الأصلية</p></div>
+    </a>
+    <a href="go:net" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #e50914;"><i class="fab fa-netflix"></i></div>
+      <div class="card-content"><h3>Netflix</h3><p>أحدث الأفلام والوثائقيات</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-tv"></i> الدراما والمسلسلات</div>
+    <a href="go:ar" class="glass-card content-item">
+      <div class="icon-wrapper"><i class="fas fa-film"></i></div>
+      <div class="card-content"><h3>مسلسلات عربية</h3><p>دراما رمضان والأعمال الحصرية</p></div>
+    </a>
+    <a href="go:tr" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #ff3b30;"><i class="fas fa-moon"></i></div>
+      <div class="card-content"><h3>الدراما التركية</h3><p>أشهر المسلسلات المترجمة</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-th-large"></i> منوعات</div>
+    <a href="go:kids" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #ff6b6b;"><i class="fas fa-baby"></i></div>
+      <div class="card-content"><h3>عالم الأطفال</h3><p>كرتون وانمي مدبلج</p></div>
+    </a>
+    <a href="go:islam" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #16a085;"><i class="fas fa-kaaba"></i></div>
+      <div class="card-content"><h3>القنوات الإسلامية</h3><p>بث مباشر للقرآن الكريم</p></div>
+    </a>
+
+  </main>
+
+  <div class="login-sheet" id="loginSheet">
+    <div style="width: 40px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 10px; margin: -20px auto 30px;"></div>
+    <h2 style="text-align: center; margin-bottom: 30px;">حسابي</h2>
+    <button class="btn-auth btn-google" onclick="handleAuth('Google')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" width="18"> متابعة باستخدام Google</button>
+    <button class="btn-auth btn-fb" onclick="handleAuth('Facebook')"><i class="fab fa-facebook-f"></i> متابعة باستخدام Facebook</button>
+  </div>
+
+  <nav class="tab-bar">
+    <a href="#" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+    <a href="go:live" class="tab-item"><i class="fas fa-broadcast-tower"></i><span>مباشر</span></a>
+    <a href="javascript:void(0)" class="tab-item" onclick="openLogin()"><i class="fas fa-user-circle"></i><span>حسابي</span></a>
+  </nav>
+
+  <script>
+    function searchContent() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let items = document.getElementsByClassName('content-item');
+      for (let i = 0; i < items.length; i++) {
+        let title = items[i].querySelector('h3').innerText.toLowerCase();
+        items[i].style.display = title.includes(input) ? "flex" : "none";
+      }
+    }
+
+    function openLogin() { document.getElementById('loginSheet').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
+    function closeLogin() { document.getElementById('loginSheet').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
+    function handleAuth(p) { alert("تسجيل الدخول عبر " + p); closeLogin(); }
+  </script>
+</body>
+</html>
