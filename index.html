@@ -14,6 +14,7 @@
       --ios-bg: rgba(255, 255, 255, 0.08);
       --ios-border: rgba(255, 255, 255, 0.15);
       --accent: #007aff;
+      --danger: #ff3b30;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -25,6 +26,25 @@
       min-height: 100vh;
       background: radial-gradient(circle at top right, #1a2a3a 0%, #000 100%);
       overflow-x: hidden;
+    }
+
+    /* شاشة منع AdGuard / VPN */
+    #protection-screen {
+      position: fixed; inset: 0; background: #000; z-index: 10000;
+      display: none; flex-direction: column; justify-content: center; align-items: center;
+      padding: 30px; text-align: center;
+    }
+    .warning-box {
+      background: var(--ios-bg); backdrop-filter: var(--ios-blur);
+      border: 1px solid var(--ios-border); border-radius: 30px;
+      padding: 40px 20px; max-width: 400px; width: 100%;
+    }
+    .warning-box i { font-size: 60px; color: var(--danger); margin-bottom: 25px; }
+    .warning-box h2 { font-size: 20px; margin-bottom: 15px; font-weight: 700; }
+    .warning-box p { font-size: 14px; opacity: 0.7; line-height: 1.6; margin-bottom: 25px; }
+    .btn-retry {
+      background: var(--accent); color: white; border: none; padding: 12px 30px;
+      border-radius: 15px; font-family: inherit; font-weight: 600; cursor: pointer;
     }
 
     header {
@@ -118,6 +138,15 @@
 </head>
 <body>
 
+  <div id="protection-screen">
+    <div class="warning-box">
+      <i class="fas fa-shield-halved"></i>
+      <h2>تنبيه أمني</h2>
+      <p>يجب إيقاف <b>AdGuard DNS</b> أو <b>VPN</b> لتشغيل AHMED TV بدون مشاكل في البث.</p>
+      <button class="btn-retry" onclick="location.reload()">تحديث الصفحة</button>
+    </div>
+  </div>
+
   <div class="overlay" id="overlay" onclick="closeLogin()"></div>
 
   <header>
@@ -129,7 +158,6 @@
   </header>
 
   <main class="app-container">
-    
     <div class="section-label"><i class="fas fa-trophy"></i> القنوات الرياضية</div>
     <a href="be.html" class="glass-card content-item">
       <div class="icon-wrapper"><i class="fas fa-satellite-dish"></i></div>
@@ -169,7 +197,6 @@
       <div class="icon-wrapper" style="color: #16a085;"><i class="fas fa-kaaba"></i></div>
       <div class="card-content"><h3>القنوات الإسلامية</h3><p>بث مباشر للقرآن الكريم</p></div>
     </a>
-
   </main>
 
   <div class="login-sheet" id="loginSheet">
@@ -186,6 +213,18 @@
   </nav>
 
   <script>
+    // وظيفة فحص الحماية
+    async function checkSecurity() {
+      const testLink = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+      try {
+        await fetch(testLink, { mode: 'no-cors', cache: 'no-store' });
+      } catch (e) {
+        document.getElementById('protection-screen').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    checkSecurity();
+
     function searchContent() {
       let input = document.getElementById('searchInput').value.toLowerCase();
       let items = document.getElementsByClassName('content-item');
@@ -194,9 +233,10 @@
         items[i].style.display = title.includes(input) ? "flex" : "none";
       }
     }
-    function openLogin() { document.getElementById('loginSheet').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
+    function openLogin() { document.getElementById('loginSheet').classList.add('open'ocument.getElementById('overlay').style.display = 'block'; }
     function closeLogin() { document.getElementById('loginSheet').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
     function handleAuth(p) { alert("تسجيل الدخول عبر " + p); closeLogin(); }
   </script>
 </body>
 </html>
+
