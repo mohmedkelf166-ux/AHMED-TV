@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
     
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6215254621154923"
+     crossorigin="anonymous"></script>
+    
     <style>
         :root {
             --ios-blur: blur(25px);
@@ -26,7 +29,6 @@
             overflow-x: hidden;
         }
 
-        /* Header */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(0, 0, 0, 0.4);
@@ -45,11 +47,9 @@
         }
         .search-container input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
 
-        /* Container */
         .container { padding: 140px 15px 120px; max-width: 600px; margin: 0 auto; }
         .section-label { font-size: 18px; font-weight: 600; margin: 25px 5px 15px; color: rgba(255,255,255,0.6); }
 
-        /* Grid System */
         .channels-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -65,7 +65,15 @@
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: flex; flex-direction: column; align-items: center;
             animation: fadeInUp 0.5s ease forwards;
+            overflow: hidden; /* لمنع خروج الإعلان عن الحواف */
         }
+        
+        /* تصميم خاص لبطاقة الإعلان */
+        .ad-card {
+            min-height: 120px;
+            justify-content: center;
+        }
+
         .channel-card:active { transform: scale(0.92); background: rgba(255,255,255,0.15); }
 
         .channel-icon {
@@ -76,7 +84,6 @@
         }
         .channel-name { font-size: 12px; font-weight: 500; }
 
-        /* Tab Bar */
         .tab-bar {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; height: 65px; background: rgba(20, 20, 20, 0.7);
@@ -102,6 +109,22 @@
     </header>
 
     <div class="container">
+        <div class="section-label">إعلان ممول</div>
+        
+        <div class="channels-grid">
+            <div class="channel-card ad-card">
+                <ins class="adsbygoogle"
+                     style="display:block;width:100%;height:100%"
+                     data-ad-client="ca-pub-6215254621154923"
+                     data-ad-slot="4559633394"
+                     data-ad-format="fluid"
+                     data-ad-layout-key="-fb+5w+4e-db+86"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+
         <div class="section-label">باقة beIN Sports</div>
         <div class="channels-grid" id="grid">
             <a href="go:be1" class="channel-card"><img src="https://i.pinimg.com/originals/20/f8/53/20f853787e15c584b40cb92aee225029.png" class="channel-icon"><span class="channel-name">beIN 1 Prem</span></a>
@@ -126,7 +149,7 @@
     <script>
         function search() {
             let q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.channel-card').forEach(c => {
+            document.querySelectorAll('#grid .channel-card').forEach(c => {
                 c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none";
             });
         }
