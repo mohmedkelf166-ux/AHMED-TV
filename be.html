@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AHMED TV | Full beIN Pack</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6215254621154923"
      crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -29,6 +30,7 @@
             overflow-x: hidden;
         }
 
+        /* Header */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(0, 0, 0, 0.4);
@@ -47,9 +49,11 @@
         }
         .search-container input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
 
+        /* Container */
         .container { padding: 140px 15px 120px; max-width: 600px; margin: 0 auto; }
         .section-label { font-size: 18px; font-weight: 600; margin: 25px 5px 15px; color: rgba(255,255,255,0.6); }
 
+        /* Grid System */
         .channels-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -65,13 +69,14 @@
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: flex; flex-direction: column; align-items: center;
             animation: fadeInUp 0.5s ease forwards;
-            overflow: hidden; /* لمنع خروج الإعلان عن الحواف */
+            overflow: hidden;
         }
         
-        /* تصميم خاص لبطاقة الإعلان */
+        /* تنسيق بطاقة الإعلان */
         .ad-card {
-            min-height: 120px;
+            min-height: 130px;
             justify-content: center;
+            grid-column: span 1;
         }
 
         .channel-card:active { transform: scale(0.92); background: rgba(255,255,255,0.15); }
@@ -84,6 +89,7 @@
         }
         .channel-name { font-size: 12px; font-weight: 500; }
 
+        /* Tab Bar */
         .tab-bar {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; height: 65px; background: rgba(20, 20, 20, 0.7);
@@ -109,9 +115,9 @@
     </header>
 
     <div class="container">
-        <div class="section-label">إعلان ممول</div>
         
-        <div class="channels-grid">
+        <div class="section-label">إعلان</div>
+        <div class="channels-grid" style="margin-bottom: 20px;">
             <div class="channel-card ad-card">
                 <ins class="adsbygoogle"
                      style="display:block;width:100%;height:100%"
@@ -149,9 +155,14 @@
     <script>
         function search() {
             let q = document.getElementById('searchInput').value.toLowerCase();
+            // البحث فقط داخل شبكة القنوات وليس الإعلان
             document.querySelectorAll('#grid .channel-card').forEach(c => {
                 c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none";
             });
+        }
+    </script>
+</body>
+</html>
         }
     </script>
 </body>
