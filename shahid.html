@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHMED TV | Premium Cinema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ios-blur: blur(20px);
+            --ios-bg: rgba(255, 255, 255, 0.08);
+            --ios-border: rgba(255, 255, 255, 0.12);
+            --accent: #007aff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Readex Pro', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            background: radial-gradient(circle at 0% 0%, #1c2c4c 0%, #000 60%);
+            overflow-x: hidden;
+        }
+
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease;
+        }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--ios-bg); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: var(--ios-blur); -webkit-backdrop-filter: var(--ios-blur);
+            padding: 15px 20px; border-bottom: 0.5px solid var(--ios-border);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .brand-name { font-size: 24px; font-weight: 700; }
+        .brand-name span { color: var(--accent); }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 10px 15px;
+            display: flex; align-items: center; gap: 10px;
+            border: 0.5px solid var(--ios-border);
+        }
+        .search-box input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
+
+        .container { padding: 140px 15px 100px; max-width: 800px; margin: 0 auto; }
+
+        .section-title { font-size: 19px; font-weight: 600; margin: 25px 5px 15px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.7); }
+        .section-title i { color: var(--accent); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
+
+        .card {
+            background: var(--ios-bg);
+            backdrop-filter: var(--ios-blur); -webkit-backdrop-filter: var(--ios-blur);
+            border: 1px solid var(--ios-border);
+            border-radius: 20px; padding: 12px;
+            text-align: center; text-decoration: none; color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .card:active { transform: scale(0.92); background: rgba(255,255,255,0.15); }
+
+        .card-img {
+            width: 70px; height: 70px;
+            border-radius: 15px; object-fit: cover;
+            margin-bottom: 10px; border: 0.5px solid var(--ios-border);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-title { font-size: 12px; font-weight: 500; line-height: 1.4; }
+
+        .tab-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; height: 65px; background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: var(--ios-blur); border-radius: 30px;
+            border: 1px solid var(--ios-border);
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+        }
+        .tab-item { color: rgba(255,255,255,0.3); text-decoration: none; text-align: center; font-size: 10px; }
+        .tab-item i { font-size: 22px; display: block; margin-bottom: 4px; }
+        .tab-item.active { color: var(--accent); }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .card { padding: 10px 5px; }
+            .card-img { width: 60px; height: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><div class="spinner"></div></div>
+
+    <header>
+        <div class="header-top">
+            <div class="brand-name">AHMED <span>TV</span></div>
+            <i class="fas fa-bell" style="opacity: 0.5"></i>
+        </div>
+        <div class="search-box">
+            <i class="fas fa-search" style="opacity: 0.3"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن أفلام، كرتون، مسرحيات..." onkeyup="filterContent()">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="section-title"><i class="fas fa-film"></i> مكتبة الأفلام</div>
+        <div class="grid">
+            <a href="movies1.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">أفلام 1</span></a>
+            <a href="cinema1.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">سينما</span></a>
+            <a href="movies2.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">أفلام 2</span></a>
+            <a href="movies3.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">أفلام 3</span></a>
+            <a href="action1.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">أكشن 1</span></a>
+            <a href="action2.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">أكشن 2</span></a>
+            <a href="horror1.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">رعب 1</span></a>
+            <a href="horror2.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">رعب 2</span></a>
+        </div>
+
+        <div class="section-title"><i class="fas fa-laugh-squint"></i> كرتون ومسرحيات</div>
+        <div class="grid">
+            <a href="kids.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">كرتون</span></a>
+            <a href="plays.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">مسرحيات</span></a>
+            <a href="masr1.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">مسرح مصر 1</span></a>
+            <a href="masr2.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">مسرح مصر 2</span></a>
+            <a href="masr3.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">مسرح مصر 3</span></a>
+            <a href="masr4.html" class="card item"><img src="https://e.top4top.io/p_3221r51tw1.jpeg" class="card-img"><span class="card-title">مسرح مصر 4</span></a>
+        </div>
+    </div>
+
+    <nav class="tab-bar">
+        <a href="index.html" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="live.html" class="tab-item"><i class="fas fa-tv"></i><span>بث مباشر</span></a>
+        <a href="fav.html" class="tab-item"><i class="fas fa-heart"></i><span>المفضلة</span></a>
+    </nav>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 600);
+            }, 800);
+        });
+
+        function filterContent() {
+            let q = document.getElementById('searchInput').value.toLowerCase();
+            let items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                let text = item.querySelector('.card-title').innerText.toLowerCase();
+                item.style.display = text.includes(q) ? "flex" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
