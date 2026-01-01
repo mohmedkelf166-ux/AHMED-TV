@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AHMED TV | Pro Edition</title>
+  <title>AHMED TV | Full Pro Edition</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;400;600;700&display=swap" rel="stylesheet">
@@ -28,10 +28,11 @@
       overflow-x: hidden;
     }
 
-    /* شاشة القفل الرسمية */
+    /* شاشة منع AdGuard / VPN */
     #protection-screen {
       position: fixed; inset: 0; background: #000; z-index: 10000;
-      display: none; flex-direction: column; justify-content: center; align-items: center;
+      display: none; /* مخفي افتراضياً ويظهر بواسطة JS */
+      flex-direction: column; justify-content: center; align-items: center;
       padding: 30px; text-align: center;
     }
     .warning-box {
@@ -42,32 +43,77 @@
     .warning-box i { font-size: 60px; color: var(--danger); margin-bottom: 25px; }
     .warning-box h2 { font-size: 20px; margin-bottom: 15px; font-weight: 700; }
     .warning-box p { font-size: 14px; opacity: 0.7; line-height: 1.6; margin-bottom: 25px; }
-    
     .btn-retry {
-      background: var(--accent); color: white; border: none; padding: 14px 40px;
-      border-radius: 18px; font-family: inherit; font-weight: 600; cursor: pointer;
-      transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;
-    }
-    .btn-retry:disabled {
-      background: #333; color: #777; cursor: not-allowed; opacity: 0.6;
+      background: var(--accent); color: white; border: none; padding: 12px 30px;
+      border-radius: 15px; font-family: inherit; font-weight: 600; cursor: pointer;
     }
 
     header {
       position: fixed; top: 0; width: 100%; z-index: 1000;
-      background: rgba(0, 0, 0, 0.5); backdrop-filter: var(--ios-blur);
-      padding: 10px 20px 15px; border-bottom: 0.5px solid var(--ios-border);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: var(--ios-blur);
+      -webkit-backdrop-filter: var(--ios-blur);
+      padding: 10px 20px 15px;
+      border-bottom: 0.5px solid var(--ios-border);
     }
-    .brand-name { text-align: center; font-size: 24px; font-weight: 700; }
+
+    .brand-container { text-align: center; padding-bottom: 12px; }
+    .brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
     .brand-name span { color: var(--accent); }
+
+    .search-container {
+      display: flex; align-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 14px; padding: 8px 15px;
+      border: 0.5px solid var(--ios-border);
+    }
+
+    .search-container input {
+      background: none; border: none; color: white; width: 100%;
+      outline: none; font-family: inherit; font-size: 15px; margin-right: 10px;
+    }
 
     .app-container { padding: 140px 20px 130px; max-width: 600px; margin: 0 auto; }
 
+    .section-label { font-size: 20px; font-weight: 600; margin: 30px 5px 15px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 10px; }
+    .section-label i { font-size: 16px; color: var(--accent); }
+
     .glass-card {
-      background: var(--ios-bg); backdrop-filter: var(--ios-blur);
-      border: 1px solid var(--ios-border); border-radius: 25px;
-      padding: 18px; margin-bottom: 12px; display: flex; align-items: center;
+      background: var(--ios-bg);
+      backdrop-filter: var(--ios-blur);
+      -webkit-backdrop-filter: var(--ios-blur);
+      border: 1px solid var(--ios-border);
+      border-radius: 25px;
+      padding: 18px; margin-bottom: 12px;
+      display: flex; align-items: center;
       text-decoration: none; color: white;
+      transition: all 0.3s ease;
     }
+
+    .glass-card:active { transform: scale(0.96); background: rgba(255,255,255,0.15); }
+
+    .icon-wrapper {
+      width: 50px; height: 50px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: 15px; font-size: 20px; color: var(--accent);
+    }
+
+    .card-content h3 { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
+    .card-content p { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+    .tab-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 92%; height: 70px; background: rgba(25, 25, 25, 0.65);
+      backdrop-filter: var(--ios-blur); border-radius: 35px;
+      border: 1px solid var(--ios-border);
+      display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+    }
+
+    .tab-item { color: rgba(255,255,255,0.3); text-decoration: none; text-align: center; font-size: 10px; }
+    .tab-item i { font-size: 24px; display: block; margin-bottom: 4px; }
+    .tab-item.active { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -75,62 +121,94 @@
   <div id="protection-screen">
     <div class="warning-box">
       <i class="fas fa-shield-halved"></i>
-      <h2>عذراً، الوصول غير متاح</h2>
-      <p>اكتشف النظام استخدام <b>AdGuard DNS</b> أو خدمة <b>VPN</b>.<br>يرجى إيقاف هذه الخدمات لتتمكن من متابعة المشاهدة.</p>
-      
-      <button id="retryBtn" class="btn-retry" onclick="location.reload()" disabled>
-        <span id="timer-text">إعادة المحاولة (8)</span>
-      </button>
+      <h2>تنبيه: تم اكتشاف حظر</h2>
+      <p>يجب إيقاف <b>AdGuard DNS</b> أو أي <b>VPN</b> لتتمكن من تشغيل المحتوى. الخدمة لا تعمل مع أدوات الحجب.</p>
+      <button class="btn-retry" onclick="location.reload()">تحديث الصفحة</button>
     </div>
   </div>
 
   <header>
-    <div class="brand-name">AHMED <span>TV</span></div>
+    <div class="brand-container"><div class="brand-name">AHMED <span>TV</span></div></div>
+    <div class="search-container">
+      <i class="fas fa-search" style="color: rgba(255,255,255,0.3);"></i>
+      <input type="text" id="searchInput" placeholder="بحث سريع..." onkeyup="searchContent()">
+    </div>
   </header>
 
   <main class="app-container">
-    <a href="be.html" class="glass-card">
-      <div style="margin-left:15px; color:var(--accent); font-size:20px;"><i class="fas fa-satellite-dish"></i></div>
-      <div><h3>beIN Sports</h3><p style="font-size:11px; opacity:0.4;">بث مباشر للدوريات</p></div>
+    <div class="section-label"><i class="fas fa-trophy"></i> القنوات الرياضية</div>
+    <a href="be.html" class="glass-card content-item">
+      <div class="icon-wrapper"><i class="fas fa-satellite-dish"></i></div>
+      <div class="card-content"><h3>beIN Sports</h3><p>بث مباشر للدوريات الكبرى</p></div>
+    </a>
+    <a href="ssc.html" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #f8b229;"><i class="fas fa-bolt"></i></div>
+      <div class="card-content"><h3>SSC Pro</h3><p>الدوري السعودي للمحترفين</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-star"></i> الترفيه و VIP</div>
+    <a href="shahid.html" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #00ffcc;"><i class="fas fa-crown"></i></div>
+      <div class="card-content"><h3>Shahid VIP</h3><p>حصريات شاهد الأصلية</p></div>
+    </a>
+    <a href="netflix.html" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #e50914;"><i class="fab fa-netflix"></i></div>
+      <div class="card-content"><h3>Netflix</h3><p>أحدث الأفلام والوثائقيات</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-tv"></i> الدراما والمسلسلات</div>
+    <a href="arabic.html" class="glass-card content-item">
+      <div class="icon-wrapper"><i class="fas fa-film"></i></div>
+      <div class="card-content"><h3>مسلسلات عربية</h3><p>دراما رمضان والأعمال الحصرية</p></div>
+    </a>
+    <a href="turkish.html" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #ff3b30;"><i class="fas fa-moon"></i></div>
+      <div class="card-content"><h3>الدراما التركية</h3><p>أشهر المسلسلات المترجمة</p></div>
     </a>
   </main>
 
-  <script>
-    // 1. التوجيه عند تحديث الصفحة
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-        window.location.href = "index.html";
-    }
+  <nav class="tab-bar">
+    <a href="index.html" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+    <a href="live.html" class="tab-item"><i class="fas fa-broadcast-tower"></i><span>مباشر</span></a>
+    <a href="#" class="tab-item"><i class="fas fa-user-circle"></i><span>حسابي</span></a>
+  </nav>
 
-    // 2. كود الحماية والمؤقت
+  <script>
+    // --- كود الحماية المتقدم لـ GitHub Pages ---
     function checkProtection() {
         const protectionScreen = document.getElementById('protection-screen');
-        const retryBtn = document.getElementById('retryBtn');
-        const timerText = document.getElementById('timer-text');
         
+        // محاولة تحميل سكربت من سيرفر إعلانات (سيتم حظره بواسطة AdGuard قطعاً)
         const testScript = document.createElement('script');
         testScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
         
         testScript.onerror = function() {
+            // إذا فشل التحميل، نظهر شاشة الحماية فوراً
             protectionScreen.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+        };
 
-            let timeLeft = 8;
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerText.innerText = `إعادة المحاولة (${timeLeft})`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    retryBtn.disabled = false;
-                    timerText.innerText = "إعادة المحاولة الآن";
-                }
-            }, 1000);
+        testScript.onload = function() {
+            // إذا نجح التحميل، الموقع يعمل بشكل طبيعي
+            protectionScreen.style.display = 'none';
         };
 
         document.head.appendChild(testScript);
     }
 
-    window.addEventListener('load', checkProtection);
+    // التشغيل عند التحميل
+    window.addEventListener('DOMContentLoaded', checkProtection);
+    // تشغيل إضافي بعد ثانية للتأكد من الحالة
+    setTimeout(checkProtection, 1500);
+
+    function searchContent() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let items = document.getElementsByClassName('content-item');
+      for (let i = 0; i < items.length; i++) {
+        let title = items[i].querySelector('h3').innerText.toLowerCase();
+        items[i].style.display = title.includes(input) ? "flex" : "none";
+      }
+    }
   </script>
 </body>
 </html>
