@@ -36,31 +36,24 @@
         }
         .brand { text-align: center; font-size: 24px; font-weight: 800; margin-bottom: 10px; }
         .brand span { color: var(--accent-blue); }
-        .search-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px; padding: 10px 15px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .search-box input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
 
         .container { padding: 140px 12px 20px; max-width: 600px; margin: 0 auto; }
         .section-label { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: rgba(255,255,255,0.7); border-right: 3px solid var(--accent-blue); padding-right: 10px; }
 
-        /* تعديل كرت المباراة ليصبح رابط */
         .match-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 15px; padding: 15px; margin-bottom: 12px;
             display: flex; flex-direction: column;
-            transition: all 0.3s ease;
-            text-decoration: none; /* إزالة الخط تحت الرابط */
-            color: inherit;
+            text-decoration: none; color: inherit;
+            transition: 0.3s;
         }
-        .match-card:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.1); }
+        /* شكل كرت المباراة المنتهية */
+        .match-card.is-ended { opacity: 0.5; filter: grayscale(0.8); }
 
         .match-top { display: flex; justify-content: space-between; align-items: center; }
         .team { width: 30%; text-align: center; }
-        .team img { width: 45px; height: 45px; object-fit: contain; margin-bottom: 5px; }
+        .team img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; }
         .team span { display: block; font-size: 12px; font-weight: 600; }
         
         .match-info { width: 40%; text-align: center; }
@@ -70,7 +63,7 @@
         }
         .live { background: var(--live-red); animation: pulse 1.5s infinite; }
         .upcoming { background: var(--upcoming-green); }
-        .ended { background: var(--ended-gray); opacity: 0.5; }
+        .ended { background: var(--ended-gray); }
 
         .match-time { font-size: 15px; font-weight: 700; display: block; }
         .match-meta {
@@ -84,9 +77,8 @@
             background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(25px);
             border-radius: 35px; border: 1px solid var(--border-color);
             display: flex; justify-content: space-around; align-items: center;
-            z-index: 2000; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
-        .tab-item { text-decoration: none; color: #8e8e93; text-align: center; font-size: 11px; flex: 1; transition: 0.3s; }
+        .tab-item { text-decoration: none; color: #8e8e93; text-align: center; font-size: 11px; flex: 1; }
         .tab-item i { font-size: 24px; display: block; margin-bottom: 5px; }
         .tab-item.active { color: var(--accent-blue); }
 
@@ -97,63 +89,74 @@
 
     <header>
         <div class="brand">AHMED <span>TV</span></div>
-        <div class="search-box">
-            <i class="fas fa-search" style="opacity: 0.4;"></i>
-            <input type="text" id="searchInput" placeholder="بحث عن مباراة أو فريق..." onkeyup="searchMatches()">
-        </div>
     </header>
 
-    <div class="container" id="matchContainer">
-        <div class="section-label">مباريات اليوم</div>
-    </div>
+    <div class="container" id="matchContainer"></div>
 
     <nav class="tab-bar">
-        <a href="#" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="go:beIN" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
-        <a href="go:movies" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
+        <a href="index.html" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="be.html" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
+        <a href="movies.html" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
     </nav>
 
 <script>
-// أضفت خاصية go لربط كل مباراة بالقناة الخاصة بها
+// مصفوفة البيانات (استخدم تاريخ اليوم الفعلي في حقل date)
 const matchData = [
-    { t1: "الجزائر", t1_img: "https://flagcdn.com/w80/dz.png", t2: "غينيا الاستوائية", t2_img: "https://flagcdn.com/w80/gq.png", h: 18, m: 0, ch: "beIN MAX 1", comm: "حفيظ دراجي", go: "max1" },
-    { t1: "بوركينا فاسو", t1_img: "https://flagcdn.com/w80/bf.png", t2: "السودان", t2_img: "https://flagcdn.com/w80/sd.png", h: 18, m: 0, ch: "beIN MAX 2", comm: "عصام الشوالي", go: "max2" },
-    { t1: "الكاميرون", t1_img: "https://flagcdn.com/w80/cm.png", t2: "موزمبيق", t2_img: "https://flagcdn.com/w80/mz.png", h: 21, m: 0, ch: "beIN MAX 2", comm: "أحمد عبده", go: "max2" },
-    { t1: "ساحل العاج", t1_img: "https://flagcdn.com/w80/ci.png", t2: "الغابون", t2_img: "https://flagcdn.com/w80/ga.png", h: 21, m: 0, ch: "beIN MAX 1", comm: "محمد مبروكي", go: "max1" }
+    { 
+        date: "2026-01-02", // تاريخ المباراة (سنة-شهر-يوم)
+        t1: "تولوز", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/969v67Yv8v7vL4v_mL_mww_96x96.png", 
+        t2: "لانس", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/969v67Yv8v7vL4v_mL_mww_96x96.png", 
+        h: 21, m: 45, ch: "beIN SPORTS 3", comm: "محمد مبروكي", go: "be3" 
+    },
+    { 
+        date: "2026-01-02",
+        t1: "جل فيسنتي", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/969v67Yv8v7vL4v_mL_mww_96x96.png", 
+        t2: "سبورتينغ لشبونة", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/969v67Yv8v7vL4v_mL_mww_96x96.png", 
+        h: 21, m: 45, ch: "Kuwait Sport", comm: "طارق الملا", go: "kuwait" 
+    },
+    { 
+        date: "2026-01-02",
+        t1: "رايو فاليكانو", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/969v67Yv8v7vL4v_mL_mww_96x96.png", 
+        t2: "خيتافي", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/969v67Yv8v7vL4v_mL_mww_96x96.png", 
+        h: 22, m: 0, ch: "beIN SPORTS 1", comm: "نوفل باشي", go: "be1" 
+    }
 ];
 
 function renderMatches() {
     const container = document.getElementById('matchContainer');
     container.innerHTML = '<div class="section-label">مباريات اليوم</div>';
+    
     const now = new Date();
+    // الحصول على تاريخ اليوم الحالي بصيغة YYYY-MM-DD
+    const todayStr = now.toISOString().split('T')[0];
 
-    const processedMatches = matchData.map(m => {
+    matchData.forEach(m => {
+        // إذا لم تكن المباراة في تاريخ اليوم، لا تعرضها أبداً (تختفي بعد الساعة 12 بليل)
+        if (m.date !== todayStr) return;
+
         const matchTime = new Date();
         matchTime.setHours(m.h, m.m, 0);
-        const endTime = new Date(matchTime.getTime() + 120 * 60000); 
+        const endTime = new Date(matchTime.getTime() + 115 * 60000); 
 
-        let statusWeight, statusText, statusClass;
+        let statusText, statusClass, cardClass = "";
 
         if (now < matchTime) {
-            statusText = "لم تبدأ بعد"; statusClass = "upcoming"; statusWeight = 2;
+            statusText = "لم تبدأ"; statusClass = "upcoming";
         } else if (now >= matchTime && now <= endTime) {
-            statusText = "مباشر الآن"; statusClass = "live"; statusWeight = 1;
+            statusText = "مباشر الآن"; statusClass = "live";
         } else {
-            statusText = "انتهت المباراة"; statusClass = "ended"; statusWeight = 3;
+            statusText = "انتهت"; statusClass = "ended"; cardClass = "is-ended";
         }
-        return { ...m, statusText, statusClass, statusWeight, timeStr: `${m.h % 12 || 12}:${m.m === 0 ? '00' : m.m} ${m.h >= 12 ? 'مساءً' : 'صباحاً'}` };
-    });
 
-    processedMatches.sort((a, b) => a.statusWeight - b.statusWeight);
+        const timeStr = `${m.h % 12 || 12}:${m.m === 0 ? '00' : m.m} ${m.h >= 12 ? 'PM' : 'AM'}`;
 
-    processedMatches.forEach(m => {
         container.innerHTML += `
-            <a href="go:${m.go}" class="match-card">
+            <a href="go:${m.go}" class="match-card ${cardClass}">
                 <div class="match-top">
                     <div class="team"><img src="${m.t1_img}"><span>${m.t1}</span></div>
                     <div class="match-info">
-                        <div class="status-badge ${m.statusClass}">${m.statusText}</div>
-                        <div class="match-time">${m.timeStr}</div>
+                        <div class="status-badge ${statusClass}">${statusText}</div>
+                        <div class="match-time">${timeStr}</div>
                     </div>
                     <div class="team"><img src="${m.t2_img}"><span>${m.t2}</span></div>
                 </div>
@@ -166,15 +169,7 @@ function renderMatches() {
     });
 }
 
-function searchMatches() {
-    let input = document.getElementById('searchInput').value.toLowerCase();
-    let cards = document.getElementsByClassName('match-card');
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].style.display = cards[i].innerText.toLowerCase().includes(input) ? "flex" : "none";
-    }
-}
-
-setInterval(renderMatches, 60000);
+setInterval(renderMatches, 30000);
 renderMatches();
 </script>
 </body>
