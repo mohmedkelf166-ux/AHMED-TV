@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>AHMED TV | Full Pro Edition</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,6 +15,7 @@
       --ios-border: rgba(255, 255, 255, 0.15);
       --accent: #007aff;
       --danger: #ff3b30;
+      --ios-modal-bg: rgba(30, 30, 30, 0.95);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -28,7 +29,7 @@
       overflow-x: hidden;
     }
 
-    /* شاشة القفل */
+    /* شاشة الحماية */
     #protection-screen {
       position: fixed; inset: 0; background: #000; z-index: 10000;
       display: none; flex-direction: column; justify-content: center; align-items: center;
@@ -39,16 +40,6 @@
       border: 1px solid var(--ios-border); border-radius: 30px;
       padding: 40px 20px; max-width: 400px; width: 100%;
     }
-    .warning-box i { font-size: 60px; color: var(--danger); margin-bottom: 25px; }
-    .warning-box h2 { font-size: 20px; margin-bottom: 15px; font-weight: 700; }
-    .warning-box p { font-size: 14px; opacity: 0.7; line-height: 1.6; margin-bottom: 25px; }
-    
-    .btn-retry {
-      background: var(--accent); color: white; border: none; padding: 14px 40px;
-      border-radius: 18px; font-family: inherit; font-weight: 600; cursor: pointer;
-      transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;
-    }
-    .btn-retry:disabled { background: #333; color: #777; cursor: not-allowed; opacity: 0.6; }
 
     header {
       position: fixed; top: 0; width: 100%; z-index: 1000;
@@ -56,7 +47,19 @@
       padding: 10px 20px 15px; border-bottom: 0.5px solid var(--ios-border);
     }
 
-    .brand-container { text-align: center; padding-bottom: 12px; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; margin-top: 35px; margin-bottom: 12px; }
+    
+    /* صورة الحساب في الهيدر */
+    .user-profile-circle {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid var(--ios-border);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; cursor: pointer; transition: 0.3s;
+    }
+    .user-profile-circle i { font-size: 20px; color: #fff; }
+    .user-profile-circle img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+    .brand-container { flex-grow: 1; text-align: center; margin-right: -40px; }
     .brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
     .brand-name span { color: var(--accent); }
 
@@ -66,14 +69,9 @@
       border-radius: 14px; padding: 8px 15px;
       border: 0.5px solid var(--ios-border);
     }
+    .search-container input { background: none; border: none; color: white; width: 100%; outline: none; font-family: inherit; font-size: 15px; margin-right: 10px; }
 
-    .search-container input {
-      background: none; border: none; color: white; width: 100%;
-      outline: none; font-family: inherit; font-size: 15px; margin-right: 10px;
-    }
-
-    .app-container { padding: 140px 20px 130px; max-width: 600px; margin: 0 auto; }
-
+    .app-container { padding: 180px 20px 130px; max-width: 600px; margin: 0 auto; }
     .section-label { font-size: 20px; font-weight: 600; margin: 30px 5px 15px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 10px; }
     .section-label i { font-size: 16px; color: var(--accent); }
 
@@ -83,17 +81,31 @@
       padding: 18px; margin-bottom: 12px; display: flex; align-items: center;
       text-decoration: none; color: white; transition: all 0.3s ease;
     }
-
     .glass-card:active { transform: scale(0.96); background: rgba(255,255,255,0.15); }
 
-    .icon-wrapper {
-      width: 50px; height: 50px; background: rgba(255,255,255,0.06);
-      border-radius: 15px; display: flex; align-items: center; justify-content: center;
-      margin-left: 15px; font-size: 20px; color: var(--accent);
-    }
-
+    .icon-wrapper { width: 50px; height: 50px; background: rgba(255,255,255,0.06); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-left: 15px; font-size: 20px; color: var(--accent); }
     .card-content h3 { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
     .card-content p { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+    /* نافذة تسجيل الدخول iOS */
+    .ios-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      display: none; align-items: center; justify-content: center; z-index: 5000; backdrop-filter: blur(5px);
+    }
+    .ios-alert-box {
+      width: 285px; background: var(--ios-modal-bg); backdrop-filter: blur(25px);
+      border-radius: 18px; overflow: hidden; text-align: center; border: 0.5px solid rgba(255,255,255,0.1);
+      animation: iosPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes iosPop { from { transform: scale(1.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .ios-header { padding: 25px 15px; }
+    .ios-header i { font-size: 40px; margin-bottom: 15px; color: #fff; }
+    .ios-btn {
+      width: 100%; padding: 14px; background: none; border: none; border-top: 0.5px solid rgba(255,255,255,0.1);
+      color: var(--accent); font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .ios-btn:active { background: rgba(255,255,255,0.1); }
+    .ios-btn.logout { color: var(--danger); font-weight: 600; }
 
     .tab-bar {
       position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
@@ -102,27 +114,21 @@
       border: 1px solid var(--ios-border);
       display: flex; justify-content: space-around; align-items: center; z-index: 1000;
     }
-
-    .tab-item { color: rgba(255,255,255,0.3); text-decoration: none; text-align: center; font-size: 10px; }
+    .tab-item { color: rgba(255,255,255,0.3); text-decoration: none; text-align: center; font-size: 10px; flex: 1; }
     .tab-item i { font-size: 24px; display: block; margin-bottom: 4px; }
     .tab-item.active { color: var(--accent); }
   </style>
 </head>
 <body>
 
-  <div id="protection-screen">
-    <div class="warning-box">
-      <i class="fas fa-shield-halved"></i>
-      <h2>عذراً، الوصول غير متاح</h2>
-      <p>اكتشف النظام استخدام <b>AdGuard DNS</b> أو خدمة <b>VPN</b>.<br>يرجى إيقاف هذه الخدمات لتتمكن من متابعة المشاهدة.</p>
-      <button id="retryBtn" class="btn-retry" onclick="location.reload()" disabled>
-        <span id="timer-text">إعادة المحاولة (8)</span>
-      </button>
-    </div>
-  </div>
-
   <header>
-    <div class="brand-container"><div class="brand-name">AHMED <span>TV</span></div></div>
+    <div class="header-top">
+      <div class="brand-container"><div class="brand-name">AHMED <span>TV</span></div></div>
+      <div class="user-profile-circle" onclick="openLogin()">
+        <i id="defaultUserIcon" class="fas fa-user"></i>
+        <img id="userAvatarImg" src="">
+      </div>
+    </div>
     <div class="search-container">
       <i class="fas fa-search" style="color: rgba(255,255,255,0.3);"></i>
       <input type="text" id="searchInput" placeholder="بحث سريع..." onkeyup="searchContent()">
@@ -148,8 +154,12 @@
     </a>
     <a href="osn.html" class="glass-card content-item">
       <div class="icon-wrapper" style="color: #ff0055;"><i class="fas fa-tv"></i></div>
-      <div class="card-content"><h3>OSN+</h3><p>أفضل إنتاجات HBO وهوليوود</p></div>
+      <div class="card-content"><h3>OSN+</h3><p>أفضل إنتاجات هوليوود</p></div>
     </a>
+    <a href="netflix.html" class="glass-card content-item">
+        <div class="icon-wrapper" style="color: #e50914;"><i class="fab fa-netflix"></i></div>
+        <div class="card-content"><h3>Netflix</h3><p>أحدث الأفلام والوثائقيات</p></div>
+      </a>
 
     <div class="section-label"><i class="fas fa-tv"></i> الدراما والمسلسلات</div>
     <a href="ar.html" class="glass-card content-item">
@@ -173,44 +183,83 @@
 
   </main>
 
+  <div class="ios-modal-overlay" id="loginModal">
+    <div class="ios-alert-box">
+      <div class="ios-header">
+        <i class="fab fa-apple"></i>
+        <h2 id="modalTitle">تسجيل الدخول</h2>
+        <p id="modalDesc">استخدم حسابك للمتابعة في AHMED TV</p>
+      </div>
+      <div id="authButtons">
+        <button class="ios-btn" onclick="handleLogin('TikTok')"><i class="fab fa-tiktok"></i> TikTok</button>
+        <button class="ios-btn" onclick="handleLogin('Google')"><i class="fab fa-google" style="color:#ea4335"></i> Google</button>
+        <button class="ios-btn" onclick="handleLogin('Facebook')"><i class="fab fa-facebook" style="color:#1877f2"></i> Facebook</button>
+      </div>
+      <div id="profileOptions" style="display:none">
+        <button class="ios-btn logout" onclick="handleLogout()">تسجيل الخروج</button>
+      </div>
+      <button class="ios-btn" style="color:#888; border-top:none; margin-top:5px;" onclick="closeLogin()">إلغاء</button>
+    </div>
+  </div>
+
   <nav class="tab-bar">
     <a href="index.html" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
     <a href="live.html" class="tab-item"><i class="fas fa-broadcast-tower"></i><span>مباشر</span></a>
-    <a href="#" class="tab-item"><i class="fas fa-user-circle"></i><span>حسابي</span></a>
+    <a href="javascript:void(0)" class="tab-item" onclick="openLogin()">
+        <i class="fas fa-user-circle"></i><span id="tabUserLabel">حسابي</span>
+    </a>
   </nav>
 
   <script>
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-        window.location.href = "index.html";
+    function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
+
+    function handleLogin(platform) {
+        localStorage.setItem('user_session_ahmed', platform);
+        updateUI();
+        closeLogin();
     }
 
-    function checkProtection() {
-        const protectionScreen = document.getElementById('protection-screen');
-        const retryBtn = document.getElementById('retryBtn');
-        const timerText = document.getElementById('timer-text');
+    function handleLogout() {
+        localStorage.removeItem('user_session_ahmed');
+        updateUI();
+        closeLogin();
+    }
+
+    function updateUI() {
+        const user = localStorage.getItem('user_session_ahmed');
+        const authButtons = document.getElementById('authButtons');
+        const profileOptions = document.getElementById('profileOptions');
+        const tabLabel = document.getElementById('tabUserLabel');
+        const modalTitle = document.getElementById('modalTitle');
         
-        const testScript = document.createElement('script');
-        testScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-        
-        testScript.onerror = function() {
-            protectionScreen.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        const defaultIcon = document.getElementById('defaultUserIcon');
+        const avatarImg = document.getElementById('userAvatarImg');
+
+        if (user) {
+            authButtons.style.display = 'none';
+            profileOptions.style.display = 'block';
+            tabLabel.innerText = "بروفايلي";
+            modalTitle.innerText = user + " User";
             
-            let timeLeft = 8;
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerText.innerText = `إعادة المحاولة (${timeLeft})`;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    retryBtn.disabled = false;
-                    timerText.innerText = "إعادة المحاولة الآن";
-                }
-            }, 1000);
-        };
-        document.head.appendChild(testScript);
+            // تحديث الصورة
+            defaultIcon.style.display = 'none';
+            avatarImg.style.display = 'block';
+            avatarImg.src = `https://ui-avatars.com/api/?name=${user}&background=007aff&color=fff`;
+        } else {
+            authButtons.style.display = 'block';
+            profileOptions.style.display = 'none';
+            tabLabel.innerText = "حسابي";
+            modalTitle.innerText = "تسجيل الدخول";
+            
+            // العودة للوضع الافتراضي
+            defaultIcon.style.display = 'block';
+            avatarImg.style.display = 'none';
+            avatarImg.src = "";
+        }
     }
 
-    window.addEventListener('load', checkProtection);
+    window.onload = updateUI;
 
     function searchContent() {
       let input = document.getElementById('searchInput').value.toLowerCase();
