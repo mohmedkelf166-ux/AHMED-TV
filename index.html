@@ -28,7 +28,7 @@
       overflow-x: hidden;
     }
 
-    /* شاشة القفل الرسمية */
+    /* شاشة القفل */
     #protection-screen {
       position: fixed; inset: 0; background: #000; z-index: 10000;
       display: none; flex-direction: column; justify-content: center; align-items: center;
@@ -146,9 +146,9 @@
       <div class="icon-wrapper" style="color: #00ffcc;"><i class="fas fa-crown"></i></div>
       <div class="card-content"><h3>Shahid VIP</h3><p>حصريات شاهد الأصلية</p></div>
     </a>
-    <a href="net.html" class="glass-card content-item">
-      <div class="icon-wrapper" style="color: #e50914;"><i class="fab fa-netflix"></i></div>
-      <div class="card-content"><h3>Netflix</h3><p>أحدث الأفلام والوثائقيات</p></div>
+    <a href="osn.html" class="glass-card content-item">
+      <div class="icon-wrapper" style="color: #ff0055;"><i class="fas fa-tv"></i></div>
+      <div class="card-content"><h3>OSN+</h3><p>أفضل إنتاجات HBO وهوليوود</p></div>
     </a>
 
     <div class="section-label"><i class="fas fa-tv"></i> الدراما والمسلسلات</div>
@@ -180,12 +180,10 @@
   </nav>
 
   <script>
-    // 1. التوجيه للرئيسية عند تحديث الصفحة
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
         window.location.href = "index.html";
     }
 
-    // 2. نظام حماية AdGuard و VPN
     function checkProtection() {
         const protectionScreen = document.getElementById('protection-screen');
         const retryBtn = document.getElementById('retryBtn');
