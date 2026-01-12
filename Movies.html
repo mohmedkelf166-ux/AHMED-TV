@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHMED CINEMA | Movies Pack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ios-blur: blur(25px);
+            --ios-bg: rgba(255, 255, 255, 0.08);
+            --ios-border: rgba(255, 255, 255, 0.15);
+            --accent: #E50914; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Readex Pro', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #1c2c4c 0%, #000 80%);
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: var(--ios-blur); -webkit-backdrop-filter: var(--ios-blur);
+            padding: 15px 20px; border-bottom: 0.5px solid var(--ios-border);
+        }
+        .brand-name { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 12px; letter-spacing: -1px; }
+        .brand-name span { color: var(--accent); }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 10px 15px;
+            display: flex; align-items: center; gap: 10px;
+            border: 0.5px solid var(--ios-border);
+        }
+        .search-box input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
+
+        .container { padding: 140px 15px 120px; max-width: 600px; margin: 0 auto; }
+        .section-label { font-size: 18px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.8); }
+
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        .card {
+            background: var(--ios-bg);
+            border: 1px solid var(--ios-border);
+            border-radius: 12px; overflow: hidden;
+            text-decoration: none; color: white;
+            transition: all 0.3s ease;
+            display: flex; flex-direction: column;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .card:active { transform: scale(0.95); }
+
+        .card-img {
+            width: 100%; aspect-ratio: 2/3;
+            object-fit: cover;
+        }
+        .card-info { padding: 8px; text-align: center; }
+        .card-title { font-size: 10px; font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-year { font-size: 9px; color: var(--accent); font-weight: bold; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .tab-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; height: 65px; background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(30px); border-radius: 30px;
+            border: 1px solid var(--ios-border);
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 1001;
+        }
+        .tab-item { color: rgba(255,255,255,0.4); text-decoration: none; text-align: center; font-size: 11px; flex: 1; }
+        .tab-item i { font-size: 22px; display: block; margin-bottom: 4px; }
+        .tab-item.active { color: #fff; }
+        .tab-item.active i { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-name">AHMED <span>CINEMA</span></div>
+        <div class="search-box">
+            <i class="fas fa-search" style="opacity: 0.3"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن فيلمك المفضل..." onkeyup="search()">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="section-label"><i class="fas fa-film" style="color: var(--accent);"></i> مكتبة الأفلام الأجنبية</div>
+        <div class="grid" id="grid">
+            
+            <a href="BADLANDS.html" class="card">
+                <img src="https://a.top4top.io/p_3664kvo7e1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">BADLANDS</span>
+                    <span class="card-year">2025</span>
+                </div>
+            </a>
+
+            <a href="joker.html" class="card">
+                <img src="https://h.top4top.io/p_3664k3qxq1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">Joker</span>
+                    <span class="card-year">2019</span>
+                </div>
+            </a>
+
+            <a href="FireandAsh.html" class="card">
+                <img src="https://c.top4top.io/p_3664j0cnk1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">Fire and Ash</span>
+                    <span class="card-year">2025</span>
+                </div>
+            </a>
+
+            <a href="PeopleWeMeet onVacation.html" class="card">
+                <img src="https://g.top4top.io/p_3664lmaeb1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">People We Meet on Vacation</span>
+                    <span class="card-year">2025</span>
+                </div>
+            </a>
+
+            <a href="VoiceofShadows.html" class="card">
+                <img src="https://c.top4top.io/p_3664pbit31.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">Voice of Shadows</span>
+                    <span class="card-year">2024</span>
+                </div>
+            </a>
+
+            <a href="interstellar.html" class="card">
+                <img src="https://f.top4top.io/p_3664t25iq1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">interstellar</span>
+                    <span class="card-year">2014</span>
+                </div>
+            </a>
+
+        <a href="Spider-Man.html" class="card">
+                <img src="https://f.top4top.io/p_366476lag1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">Spider-Man</span>
+                    <span class="card-year">2002</span>
+                </div>
+            </a>
+            
+            
+            
+                   <a href="Rampage.html" class="card">
+                <img src="https://i.top4top.io/p_3664xlafn1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">Rampage</span>
+                    <span class="card-year">2018</span>
+                </div>
+            </a>
+            
+                    <a href="Laila.html" class="card">
+                <img src="https://i.top4top.io/p_3664l94i41.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">Laila</span>
+                    <span class="card-year">2025</span>
+                </div>
+            </a>
+            
+                    <a href="TheVelveteenRabbit.html" class="card">
+                <img src="https://h.top4top.io/p_3664ui7p51.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">TheVelveteenRabbit</span>
+                    <span class="card-year">2023</span>
+                </div>
+            </a>
+            
+                    <a href="interstellar.html" class="card">
+                <img src="https://f.top4top.io/p_3664t25iq1.jpg" class="card-img">
+                <div class="card-info">
+                    <span class="card-title">interstellar</span>
+                    <span class="card-year">2014</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <nav class="tab-bar">
+        <a href="index.html" class="tab-item"><i class="fas fa-house"></i><span>الرئيسية</span></a>
+        <a href="live.html" class="tab-item"><i class="fas fa-tv"></i><span>بث مباشر</span></a>
+        <a href="#" class="tab-item active"><i class="fas fa-film"></i><span>أفلام</span></a>
+    </nav>
+
+    <script>
+        function search() {
+            let q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
+
