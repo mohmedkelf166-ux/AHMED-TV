@@ -16,24 +16,14 @@
       --accent: #007aff;
       --accent-grad: linear-gradient(135deg, #007aff, #00c6ff);
       --danger: #ff3b30;
+      --gold: #f8b229;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
     body {
-      font-family: 'Readex Pro', sans-serif;
-      background: #000;
-      color: #fff;
-      min-height: 100vh;
+      font-family: 'Readex Pro', sans-serif; background: #000; color: #fff; min-height: 100vh;
       background-image: radial-gradient(circle at 0% 0%, rgba(0, 122, 255, 0.1) 0%, transparent 40%);
       overflow-x: hidden;
-    }
-
-    /* شاشة الحماية */
-    #protection-screen {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10000;
-      display: none; flex-direction: column; justify-content: center; align-items: center;
-      backdrop-filter: blur(15px); text-align: center;
     }
 
     header {
@@ -67,26 +57,6 @@
     .card-content h3 { font-size: 16px; font-weight: 600; margin-bottom: 3px; }
     .card-content p { font-size: 11px; color: rgba(255,255,255,0.4); }
 
-    /* لوحة الحساب */
-    .login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 2000; display: none; }
-    .login-sheet { 
-        position: fixed; bottom: -100%; left: 0; width: 100%; 
-        background: #0f1115; border-radius: 35px 35px 0 0; padding: 30px 20px 40px; 
-        z-index: 2100; transition: 0.5s cubic-bezier(0.32, 1, 0.23, 1);
-        border-top: 1px solid var(--ios-border);
-    }
-    .login-sheet.open { bottom: 0; }
-    .sheet-handle { width: 40px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 10px; margin: -10px auto 25px; }
-
-    .auth-btn { width: 100%; padding: 15px; border-radius: 18px; border: none; font-family: inherit; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; }
-    .btn-tiktok { background: #000; color: #fff; border: 1px solid #333; }
-    .btn-google { background: #fff; color: #000; }
-    .btn-fb { background: #1877f2; color: #fff; }
-
-    .profile-view { text-align: center; display: none; }
-    .profile-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--accent-grad); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
-    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
     .tab-bar {
       position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
       width: 92%; height: 70px; background: rgba(20, 20, 20, 0.8);
@@ -101,32 +71,30 @@
 </head>
 <body>
 
-  <div id="protection-screen">
-      <div style="padding: 30px; background: var(--ios-bg); border-radius: 30px; border: 1px solid var(--ios-border); width: 85%;">
-        <i class="fas fa-shield-halved" style="font-size: 50px; color: var(--danger); margin-bottom: 20px;"></i>
-        <h2>تنبيه أمني</h2>
-        <p style="margin: 15px 0 25px; opacity: 0.7;">يرجى إيقاف AdGuard أو VPN لتشغيل البث.</p>
-        <button onclick="location.reload()" style="background: var(--accent); color: white; border: none; padding: 12px 30px; border-radius: 15px;">تحديث الصفحة</button>
-      </div>
-  </div>
-
   <header>
     <div class="brand-name">AHMED <span>TV</span></div>
     <div class="search-container">
       <i class="fas fa-search" style="opacity: 0.3;"></i>
-      <input type="text" id="searchInput" placeholder="بحث سريع..." onkeyup="searchContent()">
+      <input type="text" id="searchInput" placeholder="بحث    ..." onkeyup="searchContent()">
     </div>
   </header>
 
   <main class="app-container">
+    
     <div class="section-label"><i class="fas fa-trophy"></i> القنوات الرياضية</div>
     <a href="be.html" class="glass-card content-item">
       <div class="icon-wrapper" style="color: var(--accent);"><i class="fas fa-satellite-dish"></i></div>
       <div class="card-content"><h3>beIN Sports</h3><p>بث مباشر للدوريات الكبرى</p></div>
     </a>
     <a href="ssc.html" class="glass-card content-item">
-      <div class="icon-wrapper" style="color: #f8b229;"><i class="fas fa-bolt"></i></div>
+      <div class="icon-wrapper" style="color: var(--gold);"><i class="fas fa-bolt"></i></div>
       <div class="card-content"><h3>SSC Pro</h3><p>الدوري السعودي للمحترفين</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-video"></i> السينما العربية 2025</div>
+    <a href="ar-movies-2025.html" class="glass-card content-item" style="background: linear-gradient(to left, rgba(229, 9, 20, 0.05), var(--ios-bg));">
+      <div class="icon-wrapper" style="color: #e50914;"><i class="fas fa-fire"></i></div>
+      <div class="card-content"><h3>أحدث الأفلام العربية</h3><p>عرض أول: السادة الأفاضل، الهيبة، والمزيد</p></div>
     </a>
 
     <div class="section-label"><i class="fas fa-star"></i> الترفيه و VIP</div>
@@ -141,18 +109,8 @@
 
     <div class="section-label"><i class="fas fa-film"></i> الدراما والمسلسلات</div>
     <a href="arabic.html" class="glass-card content-item">
-      <div class="icon-wrapper"><i class="fas fa-clapperboard"></i></div>
+      <div class="icon-wrapper"><i class="fas fa-tv"></i></div>
       <div class="card-content"><h3>مسلسلات عربية</h3><p>أعمال رمضان والحصريات</p></div>
-    </a>
-    <a href="turkish.html" class="glass-card content-item">
-      <div class="icon-wrapper" style="color: #ff3b30;"><i class="fas fa-moon"></i></div>
-      <div class="card-content"><h3>الدراما التركية</h3><p>أشهر المسلسلات المترجمة</p></div>
-    </a>
-
-    <div class="section-label"><i class="fas fa-baby"></i> عالم الأطفال</div>
-    <a href="kids.html" class="glass-card content-item">
-      <div class="icon-wrapper" style="color: #ff6b6b;"><i class="fas fa-gamepad"></i></div>
-      <div class="card-content"><h3>كرتون وانمي</h3><p>محتوى آمن للأطفال</p></div>
     </a>
 
     <div class="section-label"><i class="fas fa-kaaba"></i> ديني</div>
@@ -162,90 +120,20 @@
     </a>
   </main>
 
-  <div class="login-overlay" id="loginOverlay" onclick="toggleAccount()"></div>
-  <div class="login-sheet" id="accountSheet">
-      <div class="sheet-handle"></div>
-      <div id="authOptions">
-          <h2 style="text-align:center; margin-bottom:25px;">تسجيل الدخول</h2>
-          <button class="auth-btn btn-tiktok" onclick="handleLogin('TikTok User')"><i class="fab fa-tiktok"></i> عبر TikTok</button>
-          <button class="auth-btn btn-google" onclick="handleLogin('Google User')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" width="16"> عبر Google</button>
-          <button class="auth-btn btn-fb" onclick="handleLogin('Facebook User')"><i class="fab fa-facebook-f"></i> عبر Facebook</button>
-      </div>
-      <div id="profileView" class="profile-view">
-          <div class="profile-avatar" id="userAvatarBox"><i class="fas fa-user-check"></i></div>
-          <h2 id="userNameDisplay">اسم المستخدم</h2>
-          <p style="color: var(--accent); font-size: 13px; margin-top:5px;">الحساب نشط (Premium)</p>
-          <span style="color:var(--danger); margin-top:30px; display:block; cursor:pointer; font-weight:600;" onclick="handleLogout()">تسجيل الخروج</span>
-      </div>
-  </div>
-
   <nav class="tab-bar">
     <a href="index.html" class="tab-item active"><i class="fas fa-home-alt"></i><span>الرئيسية</span></a>
     <a href="live.html" class="tab-item"><i class="fas fa-broadcast-tower"></i><span>مباشر</span></a>
-    <a href="javascript:void(0)" class="tab-item" onclick="toggleAccount()"><i class="fas fa-user-circle"></i><span id="tabLabel">حسابي</span></a>
+    <a href="javascript:void(0)" class="tab-item"><i class="fas fa-user-circle"></i><span>حسابي</span></a>
   </nav>
 
   <script>
-    window.onload = function() { checkUserStatus(); checkSecurity(); };
-
-    function toggleAccount() {
-        const sheet = document.getElementById('accountSheet');
-        const overlay = document.getElementById('loginOverlay');
-        sheet.classList.toggle('open');
-        overlay.style.display = sheet.classList.contains('open') ? 'block' : 'none';
-    }
-
-    function handleLogin(name) {
-        localStorage.setItem('ahmed_tv_user', name);
-        // توليد صورة بروفايل تلقائية بناءً على الاسم
-        const avatarUrl = `https://ui-avatars.com/api/?name=${name}&background=007aff&color=fff`;
-        localStorage.setItem('ahmed_tv_avatar', avatarUrl);
-        
-        checkUserStatus();
-        toggleAccount();
-    }
-
-    function handleLogout() {
-        localStorage.removeItem('ahmed_tv_user');
-        localStorage.removeItem('ahmed_tv_avatar');
-        checkUserStatus();
-        toggleAccount();
-    }
-
-    function checkUserStatus() {
-        const user = localStorage.getItem('ahmed_tv_user');
-        const avatar = localStorage.getItem('ahmed_tv_avatar');
-        const authOptions = document.getElementById('authOptions');
-        const profileView = document.getElementById('profileView');
-        const userNameDisplay = document.getElementById('userNameDisplay');
-        const tabLabel = document.getElementById('tabLabel');
-        const avatarBox = document.getElementById('userAvatarBox');
-
-        if (user) {
-            authOptions.style.display = 'none';
-            profileView.style.display = 'block';
-            userNameDisplay.innerText = user;
-            tabLabel.innerText = "بروفايلي";
-            avatarBox.innerHTML = `<img src="${avatar}" alt="User">`;
-        } else {
-            authOptions.style.display = 'block';
-            profileView.style.display = 'none';
-            tabLabel.innerText = "حسابي";
-            avatarBox.innerHTML = `<i class="fas fa-user-check"></i>`;
-        }
-    }
-
-    async function checkSecurity() {
-      try { await fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', { mode: 'no-cors' }); } 
-      catch (e) { document.getElementById('protection-screen').style.display = 'flex'; }
-    }
-
     function searchContent() {
       let input = document.getElementById('searchInput').value.toLowerCase();
       let items = document.getElementsByClassName('content-item');
       for (let i = 0; i < items.length; i++) {
         let title = items[i].querySelector('h3').innerText.toLowerCase();
-        items[i].style.display = title.includes(input) ? "flex" : "none";
+        let p = items[i].querySelector('p').innerText.toLowerCase();
+        items[i].style.display = (title.includes(input) || p.includes(input)) ? "flex" : "none";
       }
     }
   </script>
