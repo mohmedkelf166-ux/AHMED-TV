@@ -52,29 +52,31 @@
             border-radius: 15px; padding: 15px; margin-bottom: 12px;
             display: flex; flex-direction: column;
             transition: all 0.3s ease;
-            text-decoration: none; 
+            text-decoration: none;
             color: inherit;
         }
         .match-card:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.1); }
 
         .match-top { display: flex; justify-content: space-between; align-items: center; }
-        .team { width: 33%; text-align: center; }
+        .team { width: 30%; text-align: center; }
         .team img { width: 45px; height: 45px; object-fit: contain; margin-bottom: 5px; }
-        .team span { display: block; font-size: 13px; font-weight: 600; }
+        .team span { display: block; font-size: 11px; font-weight: 600; line-height: 1.4; }
         
-        .match-info { width: 34%; text-align: center; }
+        .match-info { width: 40%; text-align: center; }
         .status-badge {
             font-size: 10px; padding: 3px 12px; border-radius: 6px;
-            font-weight: 800; display: inline-block; margin-bottom: 8px;
+            font-weight: 800; display: inline-block; margin-bottom: 4px;
         }
         .live { background: var(--live-red); animation: pulse 1.5s infinite; }
         .upcoming { background: var(--upcoming-green); }
         .ended { background: var(--ended-gray); opacity: 0.5; }
 
         .match-time { font-size: 15px; font-weight: 700; display: block; }
+        .league-name { font-size: 9px; color: var(--accent-blue); margin-top: 4px; display: block; opacity: 0.8; }
+        
         .match-meta {
             margin-top: 10px; padding-top: 8px; border-top: 0.5px solid rgba(255,255,255,0.05);
-            display: flex; justify-content: space-around; font-size: 11px; color: #aaa;
+            display: flex; justify-content: space-around; font-size: 10px; color: #aaa;
         }
 
         .tab-bar {
@@ -86,7 +88,7 @@
             z-index: 2000; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
         .tab-item { text-decoration: none; color: #8e8e93; text-align: center; font-size: 11px; flex: 1; transition: 0.3s; }
-        .tab-item i { font-size: 24px; display: block; margin-bottom: 5px; }
+        .tab-item i { font-size: 22px; display: block; margin-bottom: 5px; }
         .tab-item.active { color: var(--accent-blue); }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
@@ -103,25 +105,30 @@
     </header>
 
     <div class="container" id="matchContainer">
-        <div class="section-label">مباريات دور الـ 16</div>
+        <div class="section-label">مباريات اليوم</div>
     </div>
 
     <nav class="tab-bar">
-        <a href="index.html" class="tab-item"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="live.html" class="tab-item active"><i class="fas fa-broadcast-tower"></i><span>مباشر</span></a>
-        <a href="go:beIN" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
+        <a href="index.html" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="beIN.html" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
+        <a href="movies.html" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
     </nav>
 
 <script>
-// تم تحديث البيانات لتعكس مباريات اليوم في دور الـ 16
 const matchData = [
-    { t1: "السنغال", t1_img: "https://flagcdn.com/w80/sn.png", t2: "السودان", t2_img: "https://flagcdn.com/w80/sd.png", h: 18, m: 0, ch: "beIN MAX 1", comm: "حسن العيدروس", go: "max1" },
-    { t1: "مالي", t1_img: "https://flagcdn.com/w80/ml.png", t2: "تونس", t2_img: "https://flagcdn.com/w80/tn.png", h: 21, m: 0, ch: "beIN MAX1", comm: "عصام الشوالي", go: "max1" }
+    { t1: "أستراليا", t1_img: "https://flagcdn.com/w80/au.png", t2: "العراق", t2_img: "https://flagcdn.com/w80/iq.png", h: 13, m: 30, ch: "beIN SPORTS 5", comm: "عبدالله الغامدي", league: "كأس آسيا تحت 23 سنة", go: "bein5" },
+    { t1: "الصين", t1_img: "https://flagcdn.com/w80/cn.png", t2: "تايلاند", t2_img: "https://flagcdn.com/w80/th.png", h: 13, m: 30, ch: "beIN SPORTS 6", comm: "نوفل باشي", league: "كأس آسيا تحت 23 سنة", go: "bein6" },
+    { t1: "مصر", t1_img: "https://flagcdn.com/w80/eg.png", t2: "السنغال", t2_img: "https://flagcdn.com/w80/sn.png", h: 19, m: 0, ch: "beIN MAX 1", comm: "علي محمد علي", league: "كأس أمم أفريقيا", go: "max1" },
+    { t1: "ايندهوفن", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/0/05/PSV_Eindhoven.svg/1200px-PSV_Eindhoven.svg.png", t2: "دن بوش", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/9/95/FC_Den_Bosch_logo.svg/1200px-FC_Den_Bosch_logo.svg.png", h: 19, m: 45, ch: "Dubai Sports 1", comm: "رؤوف خليف", league: "كأس هولندا", go: "dubai1" },
+    { t1: "أرسنال", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png", t2: "تشيلسي", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png", h: 22, m: 0, ch: "beIN SPORTS 1", comm: "حسن العيدروس", league: "كأس الرابطة الإنجليزية", go: "bein1" },
+    { t1: "المغرب", t1_img: "https://flagcdn.com/w80/ma.png", t2: "نيجيريا", t2_img: "https://flagcdn.com/w80/ng.png", h: 22, m: 0, ch: "beIN MAX 1", comm: "جواد بدة", league: "كأس أمم أفريقيا", go: "max1" },
+    { t1: "ريال مدريد", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png", t2: "أراندينا", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Arandina_CF_logo.png/200px-Arandina_CF_logo.png", h: 22, m: 0, ch: "MBC Masr 2", comm: "محمود أبو الركب", league: "كأس ملك إسبانيا", go: "mbc2" },
+    { t1: "أياكس", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Ajax_Amsterdam.svg/1200px-Ajax_Amsterdam.svg.png", t2: "إي زد آلكمار", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/AZ_Alkmaar.svg/1200px-AZ_Alkmaar.svg.png", h: 22, m: 0, ch: "Dubai Sports 1", comm: "رؤوف خليف", league: "كأس هولندا", go: "dubai1" }
 ];
 
 function renderMatches() {
     const container = document.getElementById('matchContainer');
-    container.innerHTML = '<div class="section-label">مباريات اليوم - دور الـ 16</div>';
+    container.innerHTML = '<div class="section-label">مباريات اليوم</div>';
     const now = new Date();
 
     const processedMatches = matchData.map(m => {
@@ -132,13 +139,18 @@ function renderMatches() {
         let statusWeight, statusText, statusClass;
 
         if (now < matchTime) {
-            statusText = "لم تبدأ بعد"; statusClass = "upcoming"; statusWeight = 2;
+            statusText = "لم تبدأ"; statusClass = "upcoming"; statusWeight = 2;
         } else if (now >= matchTime && now <= endTime) {
-            statusText = "مباشر الآن"; statusClass = "live"; statusWeight = 1;
+            statusText = "مباشر"; statusClass = "live"; statusWeight = 1;
         } else {
-            statusText = "انتهت المباراة"; statusClass = "ended"; statusWeight = 3;
+            statusText = "انتهت"; statusClass = "ended"; statusWeight = 3;
         }
-        return { ...m, statusText, statusClass, statusWeight, timeStr: `${m.h % 12 || 12}:${m.m === 0 ? '00' : m.m} ${m.h >= 12 ? 'مساءً' : 'صباحاً'}` };
+        
+        const ampm = m.h >= 12 ? 'PM' : 'AM';
+        const displayHours = m.h % 12 || 12;
+        const displayMinutes = m.m.toString().padStart(2, '0');
+
+        return { ...m, statusText, statusClass, statusWeight, timeStr: `${displayHours}:${displayMinutes} ${ampm}` };
     });
 
     processedMatches.sort((a, b) => a.statusWeight - b.statusWeight);
@@ -151,6 +163,7 @@ function renderMatches() {
                     <div class="match-info">
                         <div class="status-badge ${m.statusClass}">${m.statusText}</div>
                         <div class="match-time">${m.timeStr}</div>
+                        <span class="league-name">${m.league}</span>
                     </div>
                     <div class="team"><img src="${m.t2_img}"><span>${m.t2}</span></div>
                 </div>
