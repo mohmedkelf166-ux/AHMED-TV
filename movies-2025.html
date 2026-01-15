@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>AHMED CINEMA | تجربة سينمائية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -10,22 +10,27 @@
     <style>
         :root {
             --ios-blur: blur(20px);
-            /* ألوان السينما الفاخرة */
             --main-bg: #050505; 
             --card-bg: #121212;
-            --accent: #ffb400; /* لون ذهبي سينمائي (أو استبدله بـ #E50914 للون الأحمر) */
+            --accent: #ffb400; 
             --ios-border: rgba(255, 255, 255, 0.05);
             --text-dim: rgba(255, 255, 255, 0.6);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* نظام حماية المحتوى */
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            user-select: none; /* منع تحديد النص */
+            -webkit-user-select: none;
+            -webkit-touch-callout: none; /* منع قائمة السياق للجوال */
+        }
 
         body {
             font-family: 'Readex Pro', sans-serif;
             background: var(--main-bg);
             color: #fff;
             min-height: 100vh;
-            /* خلفية متدرجة سينمائية هادئة */
             background: radial-gradient(circle at top left, #1a1a1a 0%, #050505 100%);
             overflow-x: hidden;
         }
@@ -52,7 +57,10 @@
             transition: 0.3s;
         }
         .search-box:focus-within { border-color: var(--accent); background: rgba(255, 255, 255, 0.1); }
-        .search-box input { background: none; border: none; color: #fff; width: 100%; outline: none; font-size: 14px; }
+        .search-box input { 
+            background: none; border: none; color: #fff; width: 100%; outline: none; font-size: 14px; 
+            user-select: auto; -webkit-user-select: auto; /* السماح بالكتابة فقط */
+        }
 
         .container { padding: 160px 15px 120px; max-width: 800px; margin: 0 auto; }
         
@@ -81,6 +89,7 @@
             width: 100%; aspect-ratio: 2/3;
             object-fit: cover; border-bottom: 2px solid transparent;
             transition: 0.3s;
+            pointer-events: none; /* منع التفاعل مع الصورة كحفظها */
         }
         .card:hover .card-img { border-color: var(--accent); }
 
@@ -111,7 +120,7 @@
         .tab-item.active { color: var(--accent); }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <header>
         <div class="brand-name">AHMED <span>CINEMA</span></div>
@@ -127,155 +136,93 @@
             
             <a href="olp1.html" class="card">
                 <img src="https://j.top4top.io/p_36655w7g81.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">ولاد رزق </span>
-                    <span class="card-year">2015</span>
-                </div>
+                <div class="card-info"><span class="card-title">ولاد رزق </span><span class="card-year">2015</span></div>
             </a>
 
             <a href="olp2.html" class="card">
                 <img src="https://g.top4top.io/p_3665ubhq81.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">ولاد رزق2</span>
-                    <span class="card-year">2019</span>
-                </div>
+                <div class="card-info"><span class="card-title">ولاد رزق2</span><span class="card-year">2019</span></div>
             </a>
 
             <a href="olp3.html" class="card">
                 <img src="https://l.top4top.io/p_366536qid1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">ولاد رزق3</span>
-                    <span class="card-year">2024</span>
-                </div>
+                <div class="card-info"><span class="card-title">ولاد رزق3</span><span class="card-year">2024</span></div>
             </a>
 
             <a href="HJOKD.html" class="card">
                 <img src="https://e.top4top.io/p_3665pam151.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">السادة الافاضل</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">السادة الافاضل</span><span class="card-year">2025</span></div>
             </a>
 
             <a href="Hoplghi.html" class="card">
                 <img src="https://g.top4top.io/p_3665sf1rd1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">عمهم</span>
-                    <span class="card-year">2023</span>
-                </div>
+                <div class="card-info"><span class="card-title">عمهم</span><span class="card-year">2023</span></div>
             </a>
 
-<a href="jkyugc.html" class="card">
+            <a href="jkyugc.html" class="card">
                 <img src="https://k.top4top.io/p_366540upx1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">المشروع اكس</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">المشروع اكس</span><span class="card-year">2025</span></div>
             </a>
             
             <a href="gpokshd.html" class="card">
                 <img src="https://k.top4top.io/p_3665lkq5c1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">ضي</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">ضي</span><span class="card-year">2025</span></div>
             </a>
             
             <a href="Hbgfhfr.html" class="card">
                 <img src="https://g.top4top.io/p_3665mxup31.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">رهين</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">رهين</span><span class="card-year">2025</span></div>
             </a>
             
             <a href="sdcggcd.html" class="card">
                 <img src="https://i.top4top.io/p_3665t0tcd1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">درويش</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">درويش</span><span class="card-year">2025</span></div>
             </a>
-          
-          
- 
-           
-              
+
             <a href="dxfdhf.html" class="card">
                 <img src="https://c.top4top.io/p_3665q57pu1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">الغلابة</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">الغلابة</span><span class="card-year">2025</span></div>
             </a>
-           
            
            <a href="fbvjjgx.html" class="card">
                 <img src="https://h.top4top.io/p_3665yme7h1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title"> رامبو</span>
-                    <span class="card-year">2024</span>
-                </div>
+                <div class="card-info"><span class="card-title"> رامبو</span><span class="card-year">2024</span></div>
             </a>
             
             <a href="Hdjgdc.html" class="card">
                 <img src="https://a.top4top.io/p_3665gf7h11.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">أرزة</span>
-                    <span class="card-year">2023</span>
-                </div>
+                <div class="card-info"><span class="card-title">أرزة</span><span class="card-year">2023</span></div>
             </a>
             
             <a href="Klojhdn.html" class="card">
                 <img src="https://c.top4top.io/p_36655g3uy1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">اصحاب ولا اعز</span>
-                    <span class="card-year">2022</span>
-                </div>
+                <div class="card-info"><span class="card-title">اصحاب ولا اعز</span><span class="card-year">2022</span></div>
             </a>
             
             <a href="vhfygfs.html" class="card">
                 <img src="https://f.top4top.io/p_3665lixpc1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">مين يصدق</span>
-                    <span class="card-year">2025</span>
-                </div>
+                <div class="card-info"><span class="card-title">مين يصدق</span><span class="card-year">2025</span></div>
             </a>
             
             <a href="Rtdvv.html" class="card">
                 <img src="https://g.top4top.io/p_3665ufqpl1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">رمسيس برياس</span>
-                    <span class="card-year">2023</span>
-                </div>
+                <div class="card-info"><span class="card-title">رمسيس باريس</span><span class="card-year">2023</span></div>
             </a>
             
             <a href="sdszfr.html" class="card">
                 <img src="https://i.top4top.io/p_3665xzk4n1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">تاج</span>
-                    <span class="card-year">2023</span>
-                </div>
+                <div class="card-info"><span class="card-title">تاج</span><span class="card-year">2023</span></div>
             </a>
             
             <a href="cgcffhh.html" class="card">
                 <img src="https://g.top4top.io/p_3665peuqh1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">عالماشي</span>
-                    <span class="card-year">2024</span>
-                </div>
+                <div class="card-info"><span class="card-title">عالماشي</span><span class="card-year">2024</span></div>
             </a>
             
             <a href="hkijkg.html" class="card">
                 <img src="https://h.top4top.io/p_3665z7rme1.jpg" class="card-img">
-                <div class="card-info">
-                    <span class="card-title">رحلة404</span>
-                    <span class="card-year">2024</span>
-                </div>
+                <div class="card-info"><span class="card-title">رحلة 404</span><span class="card-year">2024</span></div>
             </a>
-            
-           
-            
         </div>
     </div>
 
@@ -292,7 +239,14 @@
                 c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none";
             });
         }
+
+        // تعطيل المفاتيح الحساسة
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0) || e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))))) {
+                return false;
+            }
+        }
     </script>
 </body>
 </html>
-4
+
