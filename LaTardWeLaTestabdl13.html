@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AHMED TV - Top Right View</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* حاوية الفيديو لضمان الحجم الكبير جداً */
+        .video-container {
+            width: 100vh; 
+            height: 100vw; 
+            transform: rotate(90deg); 
+            transform-origin: center;
+            position: absolute;
+            background-color: #000;
+        }
+
+        /* جعل الفيديو يملأ الشاشة بالكامل مثل يوتيوب */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover; 
+        }
+
+        /* الشعار: فوق نحت اليمين، صغير وشفاف جداً */
+        .watermark {
+            position: absolute;
+            top: 25px;    /* المسافة من الأعلى */
+            right: 25px;  /* المسافة من اليمين */
+            color: rgba(255, 255, 255, 0.08); /* شفافية فائقة 92% */
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 9999;
+            pointer-events: none;
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* زر ملء الشاشة الشفاف للتفعيل بنقرة واحدة */
+        #fs-layer {
+            position: absolute;
+            z-index: 10000;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+        }
+
+        @media screen and (orientation: landscape) {
+            .video-container {
+                width: 100%;
+                height: 100%;
+                transform: rotate(0deg);
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body onclick="activateFullScreen()">
+
+    <div id="fs-layer"></div>
+
+    <div class="video-container">
+        <div class="watermark">AHMED TV</div>
+
+        <iframe 
+            src="https://vkvideo.ru/video_ext.php?oid=-231395856&id=456239704&hd=2&autoplay=1" 
+            sandbox="allow-forms allow-scripts allow-same-origin" 
+            allowfullscreen="true">
+        </iframe>
+    </div>
+
+    <script>
+        function activateFullScreen() {
+            var docElm = document.documentElement;
+            
+            // إخفاء طبقة الضغط بعد التفعيل
+            document.getElementById('fs-layer').style.display = 'none';
+
+            // تفعيل ملء الشاشة (YouTube Mode)
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            } else if (docElm.webkitRequestFullscreen) {
+                docElm.webkitRequestFullscreen();
+            }
+
+            // محاولة تدوير الشاشة تلقائياً لوضع العرض
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(function(e) {
+                    console.log("الرجاء التأكد من تفعيل تدوير الشاشة في هاتفك");
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
