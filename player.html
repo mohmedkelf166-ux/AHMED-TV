@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مشغل AHMED TV</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .video-container { width: 100vh; height: 100vw; transform: rotate(90deg); transform-origin: center; position: absolute; background-color: #000; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .watermark { position: absolute; top: 25px; right: 25px; color: rgba(255, 255, 255, 0.15); font-size: 12px; font-weight: bold; z-index: 9999; pointer-events: none; font-family: sans-serif; }
+        #fs-layer { position: absolute; z-index: 10000; width: 100%; height: 100%; background: transparent; }
+        @media screen and (orientation: landscape) { .video-container { width: 100%; height: 100%; transform: rotate(0deg); position: relative; } }
+    </style>
+</head>
+<body onclick="activateFullScreen()">
+    <div id="fs-layer"></div>
+    <div class="video-container">
+        <div class="watermark">AHMED TV</div>
+        <iframe src="MOVIE_URL_HERE" allowfullscreen="true"></iframe>
+    </div>
+    <script>
+        function activateFullScreen() {
+            var docElm = document.documentElement;
+            document.getElementById('fs-layer').style.display = 'none';
+            if (docElm.requestFullscreen) { docElm.requestFullscreen(); }
+            if (screen.orientation && screen.orientation.lock) { screen.orientation.lock('landscape').catch(function(e){}); }
+        }
+    </script>
+</body>
+</html>
+
