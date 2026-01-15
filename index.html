@@ -2,10 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <meta name="1b93d2fc891860f89d6757d3df43d205f1e443b4" content="1b93d2fc891860f89d6757d3df43d205f1e443b4" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>AHMED TV | Full Pro Edition</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,7 +19,15 @@
       --gold: #f8b229;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    /* حماية المحتوى من التحديد والنسخ */
+    * { 
+      margin: 0; padding: 0; box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent;
+      user-select: none; /* منع تحديد النص */
+      -webkit-user-select: none;
+      -webkit-touch-callout: none; /* منع ظهور قائمة السياق في الجوال */
+    }
+
     body {
       font-family: 'Readex Pro', sans-serif; background: #000; color: #fff; min-height: 100vh;
       background-image: radial-gradient(circle at 0% 0%, rgba(0, 122, 255, 0.1) 0%, transparent 40%);
@@ -42,7 +47,12 @@
       background: rgba(255, 255, 255, 0.08); border-radius: 14px;
       padding: 10px 15px; display: flex; align-items: center; border: 1px solid var(--ios-border);
     }
-    .search-container input { background: none; border: none; color: #fff; width: 100%; outline: none; font-size: 14px; margin-right: 10px; }
+    .search-container input { 
+      background: none; border: none; color: #fff; width: 100%; 
+      outline: none; font-size: 14px; margin-right: 10px; 
+      user-select: auto; /* السماح بالكتابة فقط في خانة البحث */
+      -webkit-user-select: auto;
+    }
 
     .app-container { padding: 150px 20px 130px; max-width: 600px; margin: 0 auto; }
     .section-label { font-size: 18px; font-weight: 600; margin: 30px 5px 15px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.9); }
@@ -72,13 +82,11 @@
     .tab-item.active { color: var(--accent); }
   </style>
 </head>
-<body>
-
-  <header>
+<body oncontextmenu="return false;"> <header>
     <div class="brand-name">AHMED <span>TV</span></div>
     <div class="search-container">
       <i class="fas fa-search" style="opacity: 0.3;"></i>
-      <input type="text" id="searchInput" placeholder="بحث    ..." onkeyup="searchContent()">
+      <input type="text" id="searchInput" placeholder="بحث عن قناة أو فيلم..." onkeyup="searchContent()">
     </div>
   </header>
 
@@ -97,7 +105,7 @@
     <div class="section-label"><i class="fas fa-video"></i> السينما العربية 2025</div>
     <a href="movies-2025.html" class="glass-card content-item" style="background: linear-gradient(to left, rgba(229, 9, 20, 0.05), var(--ios-bg));">
       <div class="icon-wrapper" style="color: #e50914;"><i class="fas fa-fire"></i></div>
-      <div class="card-content"><h3>أحدث الأفلام العربية</h3><p>عرض أول: السادة الأفاضل، الهيبة، والمزيد</p></div>
+      <div class="card-content"><h3>أحدث الأفلام العربية</h3><p>عرض أول حصري</p></div>
     </a>
 
     <div class="section-label"><i class="fas fa-star"></i> الترفيه و VIP</div>
@@ -110,12 +118,6 @@
       <div class="card-content"><h3>Netflix</h3><p>أحدث الأفلام والوثائقيات</p></div>
     </a>
 
-    <div class="section-label"><i class="fas fa-film"></i> الدراما والمسلسلات</div>
-    <a href="arabic.html" class="glass-card content-item">
-      <div class="icon-wrapper"><i class="fas fa-tv"></i></div>
-      <div class="card-content"><h3>مسلسلات عربية</h3><p>أعمال رمضان والحصريات</p></div>
-    </a>
-
     <div class="section-label"><i class="fas fa-kaaba"></i> ديني</div>
     <a href="islam.html" class="glass-card content-item">
       <div class="icon-wrapper" style="color: #16a085;"><i class="fas fa-mosque"></i></div>
@@ -126,10 +128,11 @@
   <nav class="tab-bar">
     <a href="index.html" class="tab-item active"><i class="fas fa-home-alt"></i><span>الرئيسية</span></a>
     <a href="live.html" class="tab-item"><i class="fas fa-broadcast-tower"></i><span>مباشر</span></a>
-    <a href="javascript:void(0)" class="tab-item"><i class="fas fa-user-circle"></i><span>حسابي</span></a>
+    <a href="#" class="tab-item"><i class="fas fa-user-circle"></i><span>حسابي</span></a>
   </nav>
 
   <script>
+    // وظيفة البحث
     function searchContent() {
       let input = document.getElementById('searchInput').value.toLowerCase();
       let items = document.getElementsByClassName('content-item');
@@ -139,7 +142,15 @@
         items[i].style.display = (title.includes(input) || p.includes(input)) ? "flex" : "none";
       }
     }
+
+    // تعطيل اختصارات لوحة المفاتيح للنسخ (Ctrl+U, Ctrl+C, etc)
+    document.onkeydown = function(e) {
+      if(e.keyCode == 123) return false;
+      if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+      if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+      if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+      if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+    }
   </script>
 </body>
 </html>
-
