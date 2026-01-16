@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>AHMED TV | Full Pro Edition</title>
+  <title>AHMED TV | Pro Edition</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;400;600;700&display=swap" rel="stylesheet">
@@ -14,18 +14,16 @@
       --ios-bg: rgba(255, 255, 255, 0.05);
       --ios-border: rgba(255, 255, 255, 0.12);
       --accent: #007aff;
-      --accent-grad: linear-gradient(135deg, #007aff, #00c6ff);
-      --danger: #ff3b30;
       --gold: #f8b229;
+      --purple: #af52de;
     }
 
-    /* حماية المحتوى من التحديد والنسخ */
     * { 
       margin: 0; padding: 0; box-sizing: border-box; 
       -webkit-tap-highlight-color: transparent;
-      user-select: none; /* منع تحديد النص */
+      user-select: none;
       -webkit-user-select: none;
-      -webkit-touch-callout: none; /* منع ظهور قائمة السياق في الجوال */
+      -webkit-touch-callout: none;
     }
 
     body {
@@ -37,25 +35,17 @@
     header {
       position: fixed; top: 0; width: 100%; z-index: 1000;
       background: rgba(10, 10, 10, 0.7); backdrop-filter: var(--ios-blur);
-      padding: 15px 20px; border-bottom: 0.5px solid var(--ios-border);
+      padding: 20px; border-bottom: 0.5px solid var(--ios-border);
+      display: flex; justify-content: center; align-items: center;
     }
 
-    .brand-name { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 12px; }
+    .brand-name { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
     .brand-name span { color: var(--accent); }
 
-    .search-container {
-      background: rgba(255, 255, 255, 0.08); border-radius: 14px;
-      padding: 10px 15px; display: flex; align-items: center; border: 1px solid var(--ios-border);
-    }
-    .search-container input { 
-      background: none; border: none; color: #fff; width: 100%; 
-      outline: none; font-size: 14px; margin-right: 10px; 
-      user-select: auto; /* السماح بالكتابة فقط في خانة البحث */
-      -webkit-user-select: auto;
-    }
-
-    .app-container { padding: 150px 20px 130px; max-width: 600px; margin: 0 auto; }
-    .section-label { font-size: 18px; font-weight: 600; margin: 30px 5px 15px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.9); }
+    /* تعديل المسافة العلوية بعد حذف البحث */
+    .app-container { padding: 100px 20px 130px; max-width: 600px; margin: 0 auto; }
+    
+    .section-label { font-size: 18px; font-weight: 600; margin: 25px 5px 15px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.9); }
     .section-label i { font-size: 16px; color: var(--accent); }
 
     .glass-card {
@@ -82,44 +72,52 @@
     .tab-item.active { color: var(--accent); }
   </style>
 </head>
-<body oncontextmenu="return false;"> <header>
+<body oncontextmenu="return false;"> 
+
+  <header>
     <div class="brand-name">AHMED <span>TV</span></div>
-    <div class="search-container">
-      <i class="fas fa-search" style="opacity: 0.3;"></i>
-      <input type="text" id="searchInput" placeholder="بحث عن قناة أو فيلم..." onkeyup="searchContent()">
-    </div>
   </header>
 
   <main class="app-container">
     
     <div class="section-label"><i class="fas fa-trophy"></i> القنوات الرياضية</div>
-    <a href="be.html" class="glass-card content-item">
+    <a href="be.html" class="glass-card">
       <div class="icon-wrapper" style="color: var(--accent);"><i class="fas fa-satellite-dish"></i></div>
       <div class="card-content"><h3>beIN Sports</h3><p>بث مباشر للدوريات الكبرى</p></div>
     </a>
-    <a href="ssc.html" class="glass-card content-item">
+    <a href="ssc.html" class="glass-card">
       <div class="icon-wrapper" style="color: var(--gold);"><i class="fas fa-bolt"></i></div>
       <div class="card-content"><h3>SSC Pro</h3><p>الدوري السعودي للمحترفين</p></div>
     </a>
 
-    <div class="section-label"><i class="fas fa-video"></i> السينما العربية 2025</div>
-    <a href="movies-2025.html" class="glass-card content-item" style="background: linear-gradient(to left, rgba(229, 9, 20, 0.05), var(--ios-bg));">
+    <div class="section-label"><i class="fas fa-tv"></i> عالم المسلسلات</div>
+    <a href="series-arabic.html" class="glass-card">
+      <div class="icon-wrapper" style="color: #ff9500;"><i class="fas fa-film"></i></div>
+      <div class="card-content"><h3>مسلسلات عربية</h3><p>دراما، كوميديا، وأكشن</p></div>
+    </a>
+    <a href="series-foreign.html" class="glass-card">
+      <div class="icon-wrapper" style="color: var(--purple);"><i class="fas fa-language"></i></div>
+      <div class="card-content"><h3>مسلسلات أجنبية</h3><p>أفضل المسلسلات المترجمة</p></div>
+    </a>
+
+    <div class="section-label"><i class="fas fa-video"></i> السينما العربية</div>
+    <a href="movies-2025.html" class="glass-card" style="background: linear-gradient(to left, rgba(229, 9, 20, 0.05), var(--ios-bg));">
       <div class="icon-wrapper" style="color: #e50914;"><i class="fas fa-fire"></i></div>
-      <div class="card-content"><h3>أحدث الأفلام العربية</h3><p>عرض أول حصري</p></div>
+      <div class="card-content"><h3>أحدث الأفلام العربية</h3><p>عرض أول حصري 2025</p></div>
     </a>
 
     <div class="section-label"><i class="fas fa-star"></i> الترفيه و VIP</div>
-    <a href="shahid.html" class="glass-card content-item">
+    <a href="shahid.html" class="glass-card">
       <div class="icon-wrapper" style="color: #00ffcc;"><i class="fas fa-crown"></i></div>
       <div class="card-content"><h3>Shahid VIP</h3><p>حصريات شاهد الأصلية</p></div>
     </a>
-    <a href="Movies.html" class="glass-card content-item">
+    <a href="Movies.html" class="glass-card">
       <div class="icon-wrapper" style="color: #e50914;"><i class="fab fa-netflix"></i></div>
       <div class="card-content"><h3>Netflix</h3><p>أحدث الأفلام والوثائقيات</p></div>
     </a>
 
     <div class="section-label"><i class="fas fa-kaaba"></i> ديني</div>
-    <a href="islam.html" class="glass-card content-item">
+    <a href="islam.html" class="glass-card">
       <div class="icon-wrapper" style="color: #16a085;"><i class="fas fa-mosque"></i></div>
       <div class="card-content"><h3>قنوات إسلامية</h3><p>بث مباشر للقرآن الكريم</p></div>
     </a>
@@ -132,23 +130,10 @@
   </nav>
 
   <script>
-    // وظيفة البحث
-    function searchContent() {
-      let input = document.getElementById('searchInput').value.toLowerCase();
-      let items = document.getElementsByClassName('content-item');
-      for (let i = 0; i < items.length; i++) {
-        let title = items[i].querySelector('h3').innerText.toLowerCase();
-        let p = items[i].querySelector('p').innerText.toLowerCase();
-        items[i].style.display = (title.includes(input) || p.includes(input)) ? "flex" : "none";
-      }
-    }
-
-    // تعطيل اختصارات لوحة المفاتيح للنسخ (Ctrl+U, Ctrl+C, etc)
+    // حماية المحتوى
     document.onkeydown = function(e) {
       if(e.keyCode == 123) return false;
-      if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-      if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-      if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+      if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
       if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
     }
   </script>
