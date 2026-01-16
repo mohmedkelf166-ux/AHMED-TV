@@ -58,22 +58,20 @@
         .match-card:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.1); }
 
         .match-top { display: flex; justify-content: space-between; align-items: center; }
-        .team { width: 30%; text-align: center; }
-        .team img { width: 45px; height: 45px; object-fit: contain; margin-bottom: 5px; }
-        .team span { display: block; font-size: 11px; font-weight: 600; line-height: 1.4; }
+        .team { width: 33%; text-align: center; }
+        .team img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 5px; }
+        .team span { display: block; font-size: 11px; font-weight: 600; line-height: 1.2; }
         
-        .match-info { width: 40%; text-align: center; }
+        .match-info { width: 34%; text-align: center; }
         .status-badge {
-            font-size: 10px; padding: 3px 12px; border-radius: 6px;
-            font-weight: 800; display: inline-block; margin-bottom: 4px;
+            font-size: 9px; padding: 2px 10px; border-radius: 6px;
+            font-weight: 800; display: inline-block; margin-bottom: 5px;
         }
         .live { background: var(--live-red); animation: pulse 1.5s infinite; }
         .upcoming { background: var(--upcoming-green); }
         .ended { background: var(--ended-gray); opacity: 0.5; }
 
-        .match-time { font-size: 15px; font-weight: 700; display: block; }
-        .league-name { font-size: 9px; color: var(--accent-blue); margin-top: 4px; display: block; opacity: 0.8; }
-        
+        .match-time { font-size: 14px; font-weight: 700; display: block; }
         .match-meta {
             margin-top: 10px; padding-top: 8px; border-top: 0.5px solid rgba(255,255,255,0.05);
             display: flex; justify-content: space-around; font-size: 10px; color: #aaa;
@@ -88,15 +86,13 @@
             z-index: 2000; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
         .tab-item { text-decoration: none; color: #8e8e93; text-align: center; font-size: 11px; flex: 1; transition: 0.3s; }
-        .tab-item i { font-size: 22px; display: block; margin-bottom: 5px; }
+        .tab-item i { font-size: 24px; display: block; margin-bottom: 5px; }
         .tab-item.active { color: var(--accent-blue); }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
-
-    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
     <header>
         <div class="brand">AHMED <span>TV</span></div>
@@ -107,108 +103,79 @@
     </header>
 
     <div class="container" id="matchContainer">
-        <div class="section-label">مباريات اليوم</div>
-    </div>
+        </div>
 
     <nav class="tab-bar">
-        <a href="index.html" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="beIN.html" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
-        <a href="movies.html" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
+        <a href="#" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="go:beIN" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
+        <a href="go:movies" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
     </nav>
 
 <script>
-const notifiedMatches = new Set();
-const notifSound = document.getElementById('notifSound');
-
+// البيانات مستخرجة من الصورة المرفقة
 const matchData = [
-    { t1: "أستراليا", t1_img: "https://flagcdn.com/w80/au.png", t2: "العراق", t2_img: "https://flagcdn.com/w80/iq.png", h: 13, m: 30, ch: "beIN SPORTS 5", comm: "عبدالله الغامدي", league: "كأس آسيا تحت 23 سنة", go: "bein5" },
-    { t1: "الصين", t1_img: "https://flagcdn.com/w80/cn.png", t2: "تايلاند", t2_img: "https://flagcdn.com/w80/th.png", h: 13, m: 30, ch: "beIN SPORTS 6", comm: "نوفل باشي", league: "كأس آسيا تحت 23 سنة", go: "bein6" },
-    { t1: "مصر", t1_img: "https://flagcdn.com/w80/eg.png", t2: "السنغال", t2_img: "https://flagcdn.com/w80/sn.png", h: 19, m: 0, ch: "beIN MAX 1", comm: "علي محمد علي", league: "كأس أمم أفريقيا", go: "max1" },
-    { t1: "ايندهوفن", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/0/05/PSV_Eindhoven.svg/1200px-PSV_Eindhoven.svg.png", t2: "دن بوش", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/9/95/FC_Den_Bosch_logo.svg/1200px-FC_Den_Bosch_logo.svg.png", h: 19, m: 45, ch: "Dubai Sports 1", comm: "رؤوف خليف", league: "كأس هولندا", go: "dubai1" },
-    { t1: "أرسنال", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png", t2: "تشيلسي", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png", h: 22, m: 0, ch: "beIN SPORTS 1", comm: "حسن العيدروس", league: "كأس الرابطة الإنجليزية", go: "bein1" },
-    { t1: "المغرب", t1_img: "https://flagcdn.com/w80/ma.png", t2: "نيجيريا", t2_img: "https://flagcdn.com/w80/ng.png", h: 22, m: 0, ch: "beIN MAX 1", comm: "جواد بدة", league: "كأس أمم أفريقيا", go: "max1" },
-    { t1: "ريال مدريد", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png", t2: "أراندينا", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Arandina_CF_logo.png/200px-Arandina_CF_logo.png", h: 22, m: 0, ch: "MBC Masr 2", comm: "محمود أبو الركب", league: "كأس ملك إسبانيا", go: "mbc2" },
-    { t1: "أياكس", t1_img: "https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Ajax_Amsterdam.svg/1200px-Ajax_Amsterdam.svg.png", t2: "إي زد آلكمار", t2_img: "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/AZ_Alkmaar.svg/1200px-AZ_Alkmaar.svg.png", h: 22, m: 0, ch: "Dubai Sports 1", comm: "رؤوف خليف", league: "كأس هولندا", go: "dubai1" }
+    // كأس أمم أفريقيا
+    { t1: "مصر", t1_img: "https://flagcdn.com/w80/eg.png", t2: "نيجيريا", t2_img: "https://flagcdn.com/w80/ng.png", h: 20, m: 0, ch: "beIN MAX 1", comm: "علي محمد علي", go: "max1", cat: "كأس أمم أفريقيا" },
+    
+    // الدوري الإنجليزي
+    { t1: "مان سيتي", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/z3OC_nSPlA2X7ccFSTp7mw_48x48.png", t2: "مان يونايتد", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/udn4nS_9P6ST9UIhbMQRiw_48x48.png", h: 15, m: 30, ch: "beIN 1 Premium", comm: "خليل البلوشي", go: "ch1", cat: "الدوري الإنجليزي" },
+    { t1: "ليفربول", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/0i4bM5path9xTIQnkAtY2A_48x48.png", t2: "تشيلسي", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/fhNm1S_5X_N6rnMls9760g_48x48.png", h: 18, m: 0, ch: "beIN 2 Premium", comm: "عصام الشوالي", go: "ch2", cat: "الدوري الإنجليزي" },
+    { t1: "أرسنال", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/49betv2AfE9o-Phv1HmP_A_48x48.png", t2: "توتنهام", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/k39R_G7InBSUbbv-MdrM6w_48x48.png", h: 21, m: 30, ch: "beIN 1 Premium", comm: "حفيظ دراجي", go: "ch1", cat: "الدوري الإنجليزي" },
+
+    // الدوري الإسباني
+    { t1: "ريال مدريد", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/Th4fCHbd9xpoCl769O9q_g_48x48.png", t2: "خيتافي", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/7m5998dfBeXvYh6C4Ssh_w_48x48.png", h: 16, m: 0, ch: "beIN 3", comm: "يوسف سيف", go: "ch3", cat: "الدوري الإسباني" },
+    { t1: "ريال سوسيداد", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/S99uS6Ybc79998v6Ssh_w_48x48.png", t2: "أتلتيكو مدريد", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/8m998dfBeXvYh6C4Ssh_w_48x48.png", h: 19, m: 15, ch: "beIN 3", comm: "حسن العيدروس", go: "ch3", cat: "الدوري الإسباني" },
+
+    // الدوري الإيطالي
+    { t1: "إنتر ميلان", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/966_75x75.png", t2: "ميلان", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/96_75x75.png", h: 21, m: 45, ch: "AD Sports Premium 1", comm: "فارس عوض", go: "ad1", cat: "الدوري الإيطالي" }
 ];
-
-// طلب الإذن عند أول تفاعل للمستخدم
-document.addEventListener('click', function() {
-    if ("Notification" in window && Notification.permission !== "granted") {
-        Notification.requestPermission();
-    }
-}, { once: true });
-
-function playNotificationSound() {
-    notifSound.play().catch(e => console.log("الصوت بانتظار تفاعل المستخدم"));
-}
-
-function sendNotification(title, body, icon) {
-    if (Notification.permission === "granted") {
-        new Notification(title, { body: body, icon: icon });
-        playNotificationSound(); // تشغيل النغمة عند ظهور الإشعار
-    }
-}
-
-function checkNotifications() {
-    const now = new Date();
-    matchData.forEach(m => {
-        const matchTime = new Date();
-        matchTime.setHours(m.h, m.m, 0);
-        const diffMins = Math.floor((matchTime - now) / 60000);
-
-        if (diffMins === 10 && !notifiedMatches.has(m.t1 + "_10")) {
-            sendNotification("قربت المباراة! ⏳", `مباراة ${m.t1} ضد ${m.t2} بعد 10 دقائق.`, m.t1_img);
-            notifiedMatches.add(m.t1 + "_10");
-        }
-
-        if (diffMins === 0 && !notifiedMatches.has(m.t1 + "_start")) {
-            sendNotification("بدأت الآن! ⚽", `تابع مباراة ${m.t1} و ${m.t2} مباشرة.`, m.t1_img);
-            notifiedMatches.add(m.t1 + "_start");
-        }
-    });
-}
 
 function renderMatches() {
     const container = document.getElementById('matchContainer');
-    container.innerHTML = '<div class="section-label">مباريات اليوم</div>';
+    container.innerHTML = '';
     const now = new Date();
 
-    const processedMatches = matchData.map(m => {
-        const matchTime = new Date();
-        matchTime.setHours(m.h, m.m, 0);
-        const endTime = new Date(matchTime.getTime() + 120 * 60000); 
-        let statusText, statusClass, statusWeight;
+    // تجميع المباريات حسب البطولة
+    const categories = [...new Set(matchData.map(m => m.cat))];
 
-        if (now < matchTime) { statusText = "لم تبدأ"; statusClass = "upcoming"; statusWeight = 2; }
-        else if (now >= matchTime && now <= endTime) { statusText = "مباشر"; statusClass = "live"; statusWeight = 1; }
-        else { statusText = "انتهت"; statusClass = "ended"; statusWeight = 3; }
+    categories.forEach(cat => {
+        container.innerHTML += `<div class="section-label">${cat}</div>`;
+        
+        const catMatches = matchData.filter(m => m.cat === cat);
+        
+        catMatches.forEach(m => {
+            const matchTime = new Date();
+            matchTime.setHours(m.h, m.m, 0);
+            const endTime = new Date(matchTime.getTime() + 120 * 60000); 
 
-        const ampm = m.h >= 12 ? 'PM' : 'AM';
-        const displayHours = m.h % 12 || 12;
-        const displayMinutes = m.m.toString().padStart(2, '0');
+            let statusText, statusClass;
+            if (now < matchTime) {
+                statusText = "لم تبدأ"; statusClass = "upcoming";
+            } else if (now >= matchTime && now <= endTime) {
+                statusText = "مباشر"; statusClass = "live";
+            } else {
+                statusText = "انتهت"; statusClass = "ended";
+            }
 
-        return { ...m, statusText, statusClass, statusWeight, timeStr: `${displayHours}:${displayMinutes} ${ampm}` };
-    });
+            const timeStr = `${m.h % 12 || 12}:${m.m === 0 ? '00' : m.m} ${m.h >= 12 ? 'م' : 'ص'}`;
 
-    processedMatches.sort((a, b) => a.statusWeight - b.statusWeight);
-    processedMatches.forEach(m => {
-        container.innerHTML += `
-            <a href="go:${m.go}" class="match-card">
-                <div class="match-top">
-                    <div class="team"><img src="${m.t1_img}"><span>${m.t1}</span></div>
-                    <div class="match-info">
-                        <div class="status-badge ${m.statusClass}">${m.statusText}</div>
-                        <div class="match-time">${m.timeStr}</div>
-                        <span class="league-name">${m.league}</span>
+            container.innerHTML += `
+                <a href="go:${m.go}" class="match-card">
+                    <div class="match-top">
+                        <div class="team"><img src="${m.t1_img}"><span>${m.t1}</span></div>
+                        <div class="match-info">
+                            <div class="status-badge ${statusClass}">${statusText}</div>
+                            <div class="match-time">${timeStr}</div>
+                        </div>
+                        <div class="team"><img src="${m.t2_img}"><span>${m.t2}</span></div>
                     </div>
-                    <div class="team"><img src="${m.t2_img}"><span>${m.t2}</span></div>
-                </div>
-                <div class="match-meta">
-                    <span><i class="fas fa-tv"></i> ${m.ch}</span>
-                    <span><i class="fas fa-microphone"></i> ${m.comm}</span>
-                </div>
-            </a>
-        `;
+                    <div class="match-meta">
+                        <span><i class="fas fa-tv"></i> ${m.ch}</span>
+                        <span><i class="fas fa-microphone"></i> ${m.comm}</span>
+                    </div>
+                </a>
+            `;
+        });
     });
 }
 
@@ -220,13 +187,8 @@ function searchMatches() {
     }
 }
 
-setInterval(() => {
-    renderMatches();
-    checkNotifications();
-}, 60000);
-
+setInterval(renderMatches, 60000);
 renderMatches();
-checkNotifications();
 </script>
 </body>
 </html>
