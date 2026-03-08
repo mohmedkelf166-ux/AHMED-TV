@@ -5,190 +5,585 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AHMED TV | Match Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b111e;
-            --card-bg: rgba(255, 255, 255, 0.06);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --live-red: #ff3b30;
-            --upcoming-green: #34c759;
-            --ended-gray: #48484a;
-            --accent-blue: #007aff;
+            --bg: #0a0f1e;
+            --surface: rgba(255,255,255,0.055);
+            --surface-hover: rgba(255,255,255,0.09);
+            --border: rgba(255,255,255,0.08);
+            --live: #ff3b30;
+            --green: #30d158;
+            --gray: #636366;
+            --blue: #0a84ff;
+            --text: #ffffffee;
+            --text-dim: rgba(255,255,255,0.45);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
             font-family: 'Readex Pro', sans-serif;
-            background-color: var(--bg-color);
-            background: radial-gradient(circle at top, #16213e 0%, #0b111e 100%);
-            color: #fff;
-            padding-bottom: 120px;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,100,255,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(100,0,255,0.06) 0%, transparent 60%);
+            color: var(--text);
+            padding-bottom: 110px;
+            min-height: 100vh;
         }
-
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(11, 17, 30, 0.9);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 15px; border-bottom: 0.5px solid var(--border-color);
+            background: rgba(10,15,30,0.88);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-bottom: 0.5px solid var(--border);
+            padding: 14px 15px 12px;
         }
-        .brand { text-align: center; font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-        .brand span { color: var(--accent-blue); }
+        .brand { text-align: center; font-size: 22px; font-weight: 800; letter-spacing: 1px; margin-bottom: 11px; }
+        .brand span { color: var(--blue); }
+        .brand small { font-size: 10px; color: var(--text-dim); font-weight: 400; letter-spacing: 3px; display: block; margin-top: -2px; }
         .search-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px; padding: 10px 15px;
-            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.08); border: 0.5px solid var(--border);
+            border-radius: 13px; padding: 9px 14px; display: flex; align-items: center; gap: 9px;
         }
-        .search-box input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: inherit; }
-
-        .container { padding: 140px 12px 20px; max-width: 600px; margin: 0 auto; }
-        .section-label { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: rgba(255,255,255,0.7); border-right: 3px solid var(--accent-blue); padding-right: 10px; }
-
+        .search-box i { color: var(--text-dim); font-size: 13px; }
+        .search-box input { background: none; border: none; color: var(--text); width: 100%; outline: none; font-family: inherit; font-size: 14px; }
+        .search-box input::placeholder { color: var(--text-dim); }
+        .filter-tabs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+        .filter-tabs::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            background: rgba(255,255,255,0.07); border: 0.5px solid var(--border);
+            border-radius: 20px; padding: 5px 14px; font-size: 11px;
+            font-family: inherit; color: var(--text-dim); cursor: pointer;
+            white-space: nowrap; transition: all 0.2s; font-weight: 600;
+        }
+        .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .filter-btn.live-filter.active { background: var(--live); border-color: var(--live); }
+        .container { padding: 175px 12px 20px; max-width: 620px; margin: 0 auto; }
+        .date-group { margin-bottom: 28px; }
+        .date-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 0 2px; }
+        .date-pill { background: var(--blue); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+        .date-pill.today { background: var(--green); color: #000; }
+        .date-pill.yesterday { background: var(--gray); }
+        .date-pill.past { background: var(--gray); opacity: 0.7; }
+        .date-line { flex: 1; height: 0.5px; background: var(--border); }
+        .league-label {
+            font-size: 11px; font-weight: 700; color: var(--text-dim);
+            letter-spacing: 1.5px; display: flex; align-items: center; gap: 7px; margin: 16px 0 8px 2px;
+        }
+        .league-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+        .league-label .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--live); animation: pulse 1.4s infinite; }
         .match-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 15px; padding: 15px; margin-bottom: 12px;
-            display: flex; flex-direction: column;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
+            background: var(--surface); border: 0.5px solid var(--border);
+            border-radius: 16px; padding: 14px 14px 11px; margin-bottom: 9px;
+            display: flex; flex-direction: column; transition: background 0.2s, transform 0.15s;
+            text-decoration: none; color: inherit; position: relative; overflow: hidden;
         }
-        .match-card:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.1); }
-
-        .match-top { display: flex; justify-content: space-between; align-items: center; }
-        .team { width: 33%; text-align: center; }
-        .team img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 5px; }
-        .team span { display: block; font-size: 11px; font-weight: 600; line-height: 1.2; }
-        
-        .match-info { width: 34%; text-align: center; }
+        .match-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .match-card.is-live { border-color: rgba(255,59,48,0.45); background: rgba(255,59,48,0.07); }
+        .match-card.is-ended { opacity: 0.42; filter: grayscale(50%); }
+        .match-card:active { transform: scale(0.975); background: var(--surface-hover); }
+        .match-top { display: flex; align-items: center; justify-content: space-between; }
+        .team { flex: 1; text-align: center; }
+        .team-logo-wrap { width: 44px; height: 44px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; }
+        .team img { width: 44px; height: 44px; object-fit: contain; display: block; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
+        .team-badge-fallback {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: linear-gradient(135deg,#1a2a4a,#0d1f3c);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 800; color: #fff;
+        }
+        .team-name { font-size: 11px; font-weight: 600; line-height: 1.25; color: rgba(255,255,255,0.9); }
+        .match-center { width: 100px; text-align: center; flex-shrink: 0; }
         .status-badge {
-            font-size: 9px; padding: 2px 10px; border-radius: 6px;
-            font-weight: 800; display: inline-block; margin-bottom: 5px;
+            display: inline-block; font-size: 8.5px; font-weight: 800;
+            letter-spacing: 0.5px; padding: 3px 9px; border-radius: 5px;
+            margin-bottom: 6px; text-transform: uppercase;
         }
-        .live { background: var(--live-red); animation: pulse 1.5s infinite; }
-        .upcoming { background: var(--upcoming-green); }
-        .ended { background: var(--ended-gray); opacity: 0.5; }
-
-        .match-time { font-size: 14px; font-weight: 700; display: block; }
+        .badge-live { background: var(--live); animation: pulse 1.4s infinite; }
+        .badge-upcoming { background: var(--green); color: #000; }
+        .badge-ended { background: var(--gray); }
+        .score-box { font-size: 24px; font-weight: 800; letter-spacing: 4px; line-height: 1; }
+        .score-sep { color: var(--text-dim); }
+        .time-box { font-size: 17px; font-weight: 700; line-height: 1; }
+        .live-min { font-size: 12px; font-weight: 700; color: var(--live); display: block; margin-top: 5px; }
         .match-meta {
-            margin-top: 10px; padding-top: 8px; border-top: 0.5px solid rgba(255,255,255,0.05);
-            display: flex; justify-content: space-around; font-size: 10px; color: #aaa;
+            display: flex; justify-content: center; gap: 18px;
+            margin-top: 10px; padding-top: 9px;
+            border-top: 0.5px solid rgba(255,255,255,0.06);
+            font-size: 10px; color: var(--text-dim); flex-wrap: wrap;
         }
-
+        .match-meta span { display: flex; align-items: center; gap: 4px; }
+        .match-meta i { font-size: 9px; }
+        .ch-name { color: rgba(100,180,255,0.9); font-weight: 700; }
+        .comm-name { color: rgba(255,255,255,0.7); font-weight: 600; }
+        .empty { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+        .empty i { font-size: 40px; display: block; margin-bottom: 14px; opacity: 0.3; }
+        .update-bar { text-align: center; font-size: 10px; color: var(--text-dim); padding: 8px; margin-top: 8px; }
         .tab-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; height: 75px;
-            background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(25px);
-            border-radius: 35px; border: 1px solid var(--border-color);
+            position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 420px; height: 68px;
+            background: rgba(18,18,28,0.95);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-radius: 34px; border: 0.5px solid var(--border);
             display: flex; justify-content: space-around; align-items: center;
-            z-index: 2000; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 2000; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
         }
-        .tab-item { text-decoration: none; color: #8e8e93; text-align: center; font-size: 11px; flex: 1; transition: 0.3s; }
-        .tab-item i { font-size: 24px; display: block; margin-bottom: 5px; }
-        .tab-item.active { color: var(--accent-blue); }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .tab-item { text-decoration: none; color: var(--text-dim); text-align: center; font-size: 10px; flex: 1; transition: color 0.2s; padding: 8px 0; }
+        .tab-item i { font-size: 20px; display: block; margin-bottom: 3px; }
+        .tab-item.active { color: var(--blue); }
+        .live-count { background: var(--live); color: #fff; border-radius: 10px; font-size: 9px; font-weight: 800; padding: 1px 6px; margin-right: 4px; vertical-align: middle; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.45} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        .match-card { animation: fadeUp 0.3s ease both; }
     </style>
 </head>
 <body>
+<header>
+    <div class="brand">AHMED <span>TV</span><small>MATCH CENTER</small></div>
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="بحث عن مباراة أو فريق..." oninput="doSearch()">
+    </div>
+    <div class="filter-tabs">
+        <button class="filter-btn active" onclick="setFilter('all',this)">🌍 الكل</button>
+        <button class="filter-btn live-filter" onclick="setFilter('live',this)" id="liveBtn">🔴 مباشر</button>
+        <button class="filter-btn" onclick="setFilter('upcoming',this)">📅 قادمة</button>
+        <button class="filter-btn" onclick="setFilter('ended',this)">✅ انتهت</button>
+        <button class="filter-btn" onclick="setFilter('ucl',this)">🏆 UCL</button>
+        <button class="filter-btn" onclick="setFilter('epl',this)">🏴󠁧󠁢󠁥󠁮󠁧󠁿 إنجليزي</button>
+        <button class="filter-btn" onclick="setFilter('liga',this)">🇪🇸 إسباني</button>
+        <button class="filter-btn" onclick="setFilter('seria',this)">🇮🇹 إيطالي</button>
+        <button class="filter-btn" onclick="setFilter('bund',this)">🇩🇪 ألماني</button>
+        <button class="filter-btn" onclick="setFilter('ligue',this)">🇫🇷 فرنسي</button>
+    </div>
+</header>
 
-    <header>
-        <div class="brand">AHMED <span>TV</span></div>
-        <div class="search-box">
-            <i class="fas fa-search" style="opacity: 0.4;"></i>
-            <input type="text" id="searchInput" placeholder="بحث عن مباراة أو فريق..." onkeyup="searchMatches()">
-        </div>
-    </header>
+<div class="container" id="root"></div>
 
-    <div class="container" id="matchContainer">
-        </div>
-
-    <nav class="tab-bar">
-        <a href="#" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="go:beIN" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
-        <a href="go:movies" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
-    </nav>
+<nav class="tab-bar">
+    <a href="#" class="tab-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+    <a href="go:beIN" class="tab-item"><i class="fas fa-satellite-dish"></i><span>beIN Sports</span></a>
+    <a href="go:movies" class="tab-item"><i class="fas fa-film"></i><span>أفلام</span></a>
+</nav>
 
 <script>
-// البيانات مستخرجة من الصورة المرفقة
-const matchData = [
-    // كأس أمم أفريقيا
-    { t1: "مصر", t1_img: "https://flagcdn.com/w80/eg.png", t2: "نيجيريا", t2_img: "https://flagcdn.com/w80/ng.png", h: 20, m: 0, ch: "beIN MAX 1", comm: "علي محمد علي", go: "max1", cat: "كأس أمم أفريقيا" },
-    
-    // الدوري الإنجليزي
-    { t1: "مان سيتي", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/z3OC_nSPlA2X7ccFSTp7mw_48x48.png", t2: "مان يونايتد", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/udn4nS_9P6ST9UIhbMQRiw_48x48.png", h: 15, m: 30, ch: "beIN 1 Premium", comm: "خليل البلوشي", go: "ch1", cat: "الدوري الإنجليزي" },
-    { t1: "ليفربول", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/0i4bM5path9xTIQnkAtY2A_48x48.png", t2: "تشيلسي", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/fhNm1S_5X_N6rnMls9760g_48x48.png", h: 18, m: 0, ch: "beIN 2 Premium", comm: "عصام الشوالي", go: "ch2", cat: "الدوري الإنجليزي" },
-    { t1: "أرسنال", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/49betv2AfE9o-Phv1HmP_A_48x48.png", t2: "توتنهام", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/k39R_G7InBSUbbv-MdrM6w_48x48.png", h: 21, m: 30, ch: "beIN 1 Premium", comm: "حفيظ دراجي", go: "ch1", cat: "الدوري الإنجليزي" },
+// ══════════════════════════════════════════════════════
+//  القنوات الصحيحة المُتحقق منها (موسم 2025/2026)
+//  UCL 17:45 UTC  → beIN Sports 1 HD
+//  UCL 20:00 UTC  → beIN MAX 1
+//  EPL            → beIN Sports 2 HD
+//  La Liga        → beIN Sports 1 HD
+//  Serie A        → beIN Sports 3 HD
+//  Bundesliga     → beIN Sports 4 HD
+//  Ligue 1        → beIN Sports 2 HD
+// ══════════════════════════════════════════════════════
+const CH = {
+    bein1:  {name:"beIN Sports 1 HD",  go:"ch1"},
+    beinmax:{name:"beIN MAX 1",         go:"max1"},
+    bein2:  {name:"beIN Sports 2 HD",  go:"ch2"},
+    bein3:  {name:"beIN Sports 3 HD",  go:"ch3"},
+    bein4:  {name:"beIN Sports 4 HD",  go:"ch4"},
+};
 
-    // الدوري الإسباني
-    { t1: "ريال مدريد", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/Th4fCHbd9xpoCl769O9q_g_48x48.png", t2: "خيتافي", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/7m5998dfBeXvYh6C4Ssh_w_48x48.png", h: 16, m: 0, ch: "beIN 3", comm: "يوسف سيف", go: "ch3", cat: "الدوري الإسباني" },
-    { t1: "ريال سوسيداد", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/S99uS6Ybc79998v6Ssh_w_48x48.png", t2: "أتلتيكو مدريد", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/8m998dfBeXvYh6C4Ssh_w_48x48.png", h: 19, m: 15, ch: "beIN 3", comm: "حسن العيدروس", go: "ch3", cat: "الدوري الإسباني" },
+function getChannel(m){
+    if(m.league==='ucl'){
+        const h=new Date(m.start).getUTCHours();
+        return h<19 ? CH.bein1 : CH.beinmax;
+    }
+    if(m.league==='epl')   return CH.bein2;
+    if(m.league==='liga')  return CH.bein1;
+    if(m.league==='seria') return CH.bein3;
+    if(m.league==='bund')  return CH.bein4;
+    if(m.league==='ligue') return CH.bein2;
+    return CH.bein1;
+}
 
-    // الدوري الإيطالي
-    { t1: "إنتر ميلان", t1_img: "https://ssl.gstatic.com/onebox/media/sports/logos/966_75x75.png", t2: "ميلان", t2_img: "https://ssl.gstatic.com/onebox/media/sports/logos/96_75x75.png", h: 21, m: 45, ch: "AD Sports Premium 1", comm: "فارس عوض", go: "ad1", cat: "الدوري الإيطالي" }
+// ══════════════════════════════════════════════════════
+//  المعلقون الحقيقيون
+//  UCL (17:45): حفيظ دراجي / هاني حتحوت
+//  UCL (20:00): عصام الشوالي / خليل البلوشي / يوسف سيف
+//  EPL:         رؤوف خليف / يوسف سيف / فارس عوض
+//  La Liga:     عصام الشوالي / حفيظ دراجي / خليل البلوشي
+//  Serie A:     علي محمد علي / هاني حتحوت / حسن العيدروس
+//  Bundesliga:  سامي الجمعان / أحمد عيد / فارس عوض
+//  Ligue 1:     خليل البلوشي / حسن العيدروس / رؤوف خليف
+// ══════════════════════════════════════════════════════
+
+// مُتحقق منهم رسمياً من beIN/Goal/الجزيرة
+const SPECIFIC = {
+    "غلطة سراي|ليفربول|2026-03-10":       "حفيظ دراجي",
+    "نيوكاسل|برشلونة|2026-03-10":          "خليل البلوشي",
+    "أتلتيكو مدريد|توتنهام|2026-03-10":    "عصام الشوالي",
+    "أتالانتا|بايرن ميونخ|2026-03-10":     "يوسف سيف",
+    "باير ليفركوزن|أرسنال|2026-03-11":     "حفيظ دراجي",
+    "ريال مدريد|مان سيتي|2026-03-11":      "عصام الشوالي",
+    "باريس سان جيرمان|تشيلسي|2026-03-11": "خليل البلوشي",
+    "بودو غليمت|سبورتينغ|2026-03-11":      "سامي الجمعان",
+};
+
+const POOL = {
+    ucl_e: ["حفيظ دراجي","هاني حتحوت"],
+    ucl_l: ["عصام الشوالي","خليل البلوشي","يوسف سيف"],
+    epl:   ["رؤوف خليف","يوسف سيف","فارس عوض","أحمد عيد"],
+    liga:  ["عصام الشوالي","حفيظ دراجي","خليل البلوشي"],
+    seria: ["علي محمد علي","هاني حتحوت","حسن العيدروس"],
+    bund:  ["سامي الجمعان","أحمد عيد","فارس عوض"],
+    ligue: ["خليل البلوشي","حسن العيدروس","رؤوف خليف"],
+};
+
+function getComm(m){
+    const day=m.start.substring(0,10);
+    const sp=SPECIFIC[`${m.home}|${m.away}|${day}`];
+    if(sp) return sp;
+    let h=0, k=m.home+m.away+m.start;
+    for(let i=0;i<k.length;i++) h=(h*31+k.charCodeAt(i))&0xffff;
+    if(m.league==='ucl'){
+        const hr=new Date(m.start).getUTCHours();
+        const p=hr<19?POOL.ucl_e:POOL.ucl_l;
+        return p[h%p.length];
+    }
+    const p=POOL[m.league]||POOL.epl;
+    return p[h%p.length];
+}
+
+// ══════════════════════════════════════════════════════
+const LEAGUE_META = {
+    ucl:   {label:"دوري أبطال أوروبا",        flag:"🏆"},
+    epl:   {label:"الدوري الإنجليزي الممتاز",  flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    liga:  {label:"الدوري الإسباني",            flag:"🇪🇸"},
+    seria: {label:"الدوري الإيطالي",            flag:"🇮🇹"},
+    bund:  {label:"الدوري الألماني",            flag:"🇩🇪"},
+    ligue: {label:"الدوري الفرنسي",             flag:"🇫🇷"},
+};
+
+// ══════════════════════════════════════════════════════
+//  بيانات المباريات
+// ══════════════════════════════════════════════════════
+const MATCHES = [
+  // UCL ذهاب دور 16
+  {league:"ucl",home:"غلطة سراي",        away:"ليفربول",           start:"2026-03-10T17:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"نيوكاسل",          away:"برشلونة",           start:"2026-03-10T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"أتلتيكو مدريد",    away:"توتنهام",           start:"2026-03-10T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"أتالانتا",         away:"بايرن ميونخ",       start:"2026-03-10T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"باير ليفركوزن",    away:"أرسنال",            start:"2026-03-11T17:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"ريال مدريد",       away:"مان سيتي",          start:"2026-03-11T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"بودو غليمت",       away:"سبورتينغ",          start:"2026-03-11T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"باريس سان جيرمان", away:"تشيلسي",            start:"2026-03-11T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  // UCL إياب دور 16
+  {league:"ucl",home:"ليفربول",          away:"غلطة سراي",         start:"2026-03-18T17:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"برشلونة",          away:"نيوكاسل",           start:"2026-03-18T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"توتنهام",          away:"أتلتيكو مدريد",     start:"2026-03-18T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"بايرن ميونخ",      away:"أتالانتا",          start:"2026-03-18T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"أرسنال",           away:"باير ليفركوزن",     start:"2026-03-18T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"مان سيتي",         away:"ريال مدريد",        start:"2026-03-17T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"سبورتينغ",         away:"بودو غليمت",        start:"2026-03-17T17:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ucl",home:"تشيلسي",           away:"باريس سان جيرمان",  start:"2026-03-18T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  // EPL نتائج
+  {league:"epl",home:"بورنموث",          away:"برينتفورد",         start:"2026-03-03T19:30:00Z",status:"final",sh:0,sa:0},
+  {league:"epl",home:"إيفرتون",          away:"بيرنلي",            start:"2026-03-03T19:30:00Z",status:"final",sh:2,sa:0},
+  {league:"epl",home:"ليدز يونايتد",     away:"سندرلاند",          start:"2026-03-03T19:30:00Z",status:"final",sh:0,sa:1},
+  {league:"epl",home:"وولفرهامبتون",     away:"ليفربول",           start:"2026-03-03T20:15:00Z",status:"final",sh:2,sa:1},
+  {league:"epl",home:"برايتون",          away:"أرسنال",            start:"2026-03-04T19:30:00Z",status:"final",sh:0,sa:1},
+  {league:"epl",home:"فولهام",           away:"وست هام",           start:"2026-03-04T19:30:00Z",status:"final",sh:0,sa:1},
+  {league:"epl",home:"أستون فيلا",       away:"تشيلسي",            start:"2026-03-04T19:30:00Z",status:"final",sh:1,sa:4},
+  {league:"epl",home:"مان سيتي",         away:"نوتينغهام فورست",   start:"2026-03-04T19:30:00Z",status:"final",sh:2,sa:2},
+  {league:"epl",home:"نيوكاسل",          away:"مان يونايتد",       start:"2026-03-04T20:15:00Z",status:"final",sh:2,sa:1},
+  {league:"epl",home:"توتنهام",          away:"كريستال بالاس",     start:"2026-03-05T20:00:00Z",status:"final",sh:1,sa:3},
+  // EPL مقبلة
+  {league:"epl",home:"بيرنلي",           away:"بورنموث",           start:"2026-03-14T15:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"سندرلاند",         away:"برايتون",           start:"2026-03-14T15:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"أرسنال",           away:"إيفرتون",           start:"2026-03-14T17:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"تشيلسي",           away:"نيوكاسل",           start:"2026-03-14T17:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"وست هام",          away:"مان سيتي",          start:"2026-03-14T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"كريستال بالاس",    away:"ليدز يونايتد",      start:"2026-03-15T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"مان يونايتد",      away:"أستون فيلا",        start:"2026-03-15T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"نوتينغهام فورست",  away:"فولهام",            start:"2026-03-15T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"ليفربول",          away:"توتنهام",           start:"2026-03-15T16:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"epl",home:"برينتفورد",        away:"وولفرهامبتون",      start:"2026-03-16T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  // La Liga
+  {league:"liga",home:"ريال مدريد",      away:"خيتافي",            start:"2026-03-02T20:00:00Z",status:"final",sh:0,sa:1},
+  {league:"liga",home:"سيلتا فيغو",      away:"ريال مدريد",        start:"2026-03-06T20:00:00Z",status:"final",sh:1,sa:2},
+  {league:"liga",home:"أتلتيكو مدريد",   away:"ريال سوسيداد",      start:"2026-03-07T17:30:00Z",status:"final",sh:3,sa:2},
+  {league:"liga",home:"أتلتيك بيلباو",   away:"برشلونة",           start:"2026-03-07T20:00:00Z",status:"final",sh:0,sa:1},
+  {league:"liga",home:"فياريال",         away:"إلتشي",             start:"2026-03-08T13:00:00Z",status:"final",sh:2,sa:1},
+  {league:"liga",home:"خيتافي",          away:"ريال بيتيس",        start:"2026-03-08T15:15:00Z",status:"final",sh:2,sa:0},
+  {league:"liga",home:"إشبيلية",         away:"رايو فاييكانو",     start:"2026-03-08T17:30:00Z",status:"final",sh:1,sa:0},
+  {league:"liga",home:"فالنسيا",         away:"ألافيس",            start:"2026-03-08T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"إسبانيول",        away:"ريال أوبييدو",      start:"2026-03-09T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"ألافيس",          away:"فياريال",           start:"2026-03-13T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"خيرونا",          away:"أتلتيك بيلباو",     start:"2026-03-14T13:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"أتلتيكو مدريد",   away:"خيتافي",            start:"2026-03-14T15:15:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"ريال أوبييدو",    away:"فالنسيا",           start:"2026-03-14T17:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"ريال مدريد",      away:"إلتشي",             start:"2026-03-14T20:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"مايوركا",         away:"إسبانيول",          start:"2026-03-15T13:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"برشلونة",         away:"إشبيلية",           start:"2026-03-15T15:15:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"liga",home:"ريال بيتيس",      away:"سيلتا فيغو",        start:"2026-03-15T17:30:00Z",status:"scheduled",sh:0,sa:0},
+  // Serie A
+  {league:"seria",home:"ليتشي",          away:"كريمونيزي",         start:"2026-03-08T11:30:00Z",status:"final",sh:2,sa:1},
+  {league:"seria",home:"بولونيا",        away:"هيلاس فيرونا",      start:"2026-03-08T14:00:00Z",status:"final",sh:1,sa:2},
+  {league:"seria",home:"فيورنتينا",      away:"بارما",             start:"2026-03-08T14:00:00Z",status:"final",sh:0,sa:0},
+  {league:"seria",home:"جنوى",           away:"روما",              start:"2026-03-08T17:00:00Z",status:"final",sh:1,sa:1},
+  {league:"seria",home:"ميلان",          away:"إنتر ميلان",        start:"2026-03-08T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"لاتسيو",         away:"ساسولو",            start:"2026-03-09T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"نابولي",         away:"تورينو",            start:"2026-03-06T19:45:00Z",status:"final",sh:2,sa:1},
+  {league:"seria",home:"يوفنتوس",        away:"بيزا",              start:"2026-03-07T19:45:00Z",status:"final",sh:4,sa:0},
+  {league:"seria",home:"تورينو",         away:"بارما",             start:"2026-03-13T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"إنتر ميلان",     away:"أتالانتا",          start:"2026-03-14T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"نابولي",         away:"ليتشي",             start:"2026-03-14T17:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"أودينيزي",       away:"يوفنتوس",           start:"2026-03-14T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"هيلاس فيرونا",   away:"جنوى",              start:"2026-03-15T11:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"بيزا",           away:"كالياري",           start:"2026-03-15T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"ساسولو",         away:"بولونيا",           start:"2026-03-15T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"seria",home:"كومو",           away:"روما",              start:"2026-03-15T17:00:00Z",status:"scheduled",sh:0,sa:0},
+  // Bundesliga
+  {league:"bund",home:"لايبزيغ",         away:"أوغسبورغ",          start:"2026-03-07T14:30:00Z",status:"final",sh:2,sa:1},
+  {league:"bund",home:"فرايبورغ",        away:"باير ليفركوزن",     start:"2026-03-07T14:30:00Z",status:"final",sh:3,sa:3},
+  {league:"bund",home:"كولن",            away:"بوروسيا دورتموند",  start:"2026-03-07T17:30:00Z",status:"final",sh:1,sa:2},
+  {league:"bund",home:"بايرن ميونخ",     away:"بوروسيا مونشنغلادباخ",start:"2026-03-06T19:30:00Z",status:"final",sh:4,sa:1},
+  {league:"bund",home:"سانت باولي",      away:"إينتراخت فرانكفورت",start:"2026-03-08T14:30:00Z",status:"final",sh:0,sa:0},
+  {league:"bund",home:"يونيون برلين",    away:"فيردر بريمن",       start:"2026-03-08T16:30:00Z",status:"final",sh:1,sa:3},
+  {league:"bund",home:"بوروسيا مونشنغلادباخ",away:"سانت باولي",   start:"2026-03-13T19:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"باير ليفركوزن",   away:"بايرن ميونخ",       start:"2026-03-14T14:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"إينتراخت فرانكفورت",away:"هايدنهايم",      start:"2026-03-14T14:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"بوروسيا دورتموند", away:"أوغسبورغ",         start:"2026-03-14T14:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"هوفنهايم",        away:"فولفسبورغ",         start:"2026-03-14T14:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"هامبورغ",         away:"كولن",              start:"2026-03-14T17:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"فيردر بريمن",     away:"ماينز",             start:"2026-03-15T14:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"فرايبورغ",        away:"يونيون برلين",      start:"2026-03-15T16:30:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"bund",home:"شتوتغارت",        away:"لايبزيغ",           start:"2026-03-15T18:30:00Z",status:"scheduled",sh:0,sa:0},
+  // Ligue 1
+  {league:"ligue",home:"باريس سان جيرمان",away:"موناكو",           start:"2026-03-06T19:45:00Z",status:"final",sh:1,sa:3},
+  {league:"ligue",home:"تولوز",          away:"مارسيليا",          start:"2026-03-07T20:05:00Z",status:"final",sh:0,sa:1},
+  {league:"ligue",home:"لانس",           away:"ميتز",              start:"2026-03-08T14:00:00Z",status:"final",sh:3,sa:0},
+  {league:"ligue",home:"بريست",          away:"لوهافر",            start:"2026-03-08T16:15:00Z",status:"final",sh:2,sa:0},
+  {league:"ligue",home:"نيس",            away:"رين",               start:"2026-03-08T16:15:00Z",status:"final",sh:0,sa:4},
+  {league:"ligue",home:"ليل",            away:"لوريان",            start:"2026-03-08T16:15:00Z",status:"final",sh:1,sa:1},
+  {league:"ligue",home:"أولمبيك ليون",   away:"باريس إف سي",       start:"2026-03-08T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"مارسيليا",       away:"أوكسير",            start:"2026-03-13T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"لوريان",         away:"لانس",              start:"2026-03-14T16:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"أنجيه",          away:"نيس",               start:"2026-03-14T18:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"موناكو",         away:"بريست",             start:"2026-03-14T20:05:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"ستراسبورغ",      away:"باريس إف سي",       start:"2026-03-15T14:00:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"لوهافر",         away:"أولمبيك ليون",      start:"2026-03-15T16:15:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"ميتز",           away:"تولوز",             start:"2026-03-15T16:15:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"رين",            away:"ليل",               start:"2026-03-15T19:45:00Z",status:"scheduled",sh:0,sa:0},
+  {league:"ligue",home:"لانس",           away:"أنجيه",             start:"2026-03-20T19:45:00Z",status:"scheduled",sh:0,sa:0},
 ];
 
-function renderMatches() {
-    const container = document.getElementById('matchContainer');
-    container.innerHTML = '';
-    const now = new Date();
+// ══════════════════════════════════════════════════════
+//  شعارات الفرق
+// ══════════════════════════════════════════════════════
+const LOGOS={
+  "ليفربول":"https://media.api-sports.io/football/teams/40.png",
+  "أرسنال":"https://media.api-sports.io/football/teams/42.png",
+  "مان سيتي":"https://media.api-sports.io/football/teams/50.png",
+  "مان يونايتد":"https://media.api-sports.io/football/teams/33.png",
+  "تشيلسي":"https://media.api-sports.io/football/teams/49.png",
+  "توتنهام":"https://media.api-sports.io/football/teams/47.png",
+  "نيوكاسل":"https://media.api-sports.io/football/teams/34.png",
+  "أستون فيلا":"https://media.api-sports.io/football/teams/66.png",
+  "وست هام":"https://media.api-sports.io/football/teams/48.png",
+  "برايتون":"https://media.api-sports.io/football/teams/51.png",
+  "إيفرتون":"https://media.api-sports.io/football/teams/45.png",
+  "وولفرهامبتون":"https://media.api-sports.io/football/teams/39.png",
+  "فولهام":"https://media.api-sports.io/football/teams/36.png",
+  "بورنموث":"https://media.api-sports.io/football/teams/35.png",
+  "برينتفورد":"https://media.api-sports.io/football/teams/55.png",
+  "كريستال بالاس":"https://media.api-sports.io/football/teams/52.png",
+  "نوتينغهام فورست":"https://media.api-sports.io/football/teams/65.png",
+  "ليدز يونايتد":"https://media.api-sports.io/football/teams/63.png",
+  "بيرنلي":"https://media.api-sports.io/football/teams/44.png",
+  "سندرلاند":"https://media.api-sports.io/football/teams/60.png",
+  "برشلونة":"https://media.api-sports.io/football/teams/529.png",
+  "ريال مدريد":"https://media.api-sports.io/football/teams/541.png",
+  "أتلتيكو مدريد":"https://media.api-sports.io/football/teams/530.png",
+  "إشبيلية":"https://media.api-sports.io/football/teams/536.png",
+  "فالنسيا":"https://media.api-sports.io/football/teams/532.png",
+  "فياريال":"https://media.api-sports.io/football/teams/533.png",
+  "ريال بيتيس":"https://media.api-sports.io/football/teams/543.png",
+  "ريال سوسيداد":"https://media.api-sports.io/football/teams/548.png",
+  "أتلتيك بيلباو":"https://media.api-sports.io/football/teams/531.png",
+  "خيرونا":"https://media.api-sports.io/football/teams/547.png",
+  "خيتافي":"https://media.api-sports.io/football/teams/546.png",
+  "سيلتا فيغو":"https://media.api-sports.io/football/teams/538.png",
+  "مايوركا":"https://media.api-sports.io/football/teams/798.png",
+  "ألافيس":"https://media.api-sports.io/football/teams/542.png",
+  "إسبانيول":"https://media.api-sports.io/football/teams/534.png",
+  "ريال أوبييدو":"https://media.api-sports.io/football/teams/724.png",
+  "إلتشي":"https://media.api-sports.io/football/teams/727.png",
+  "رايو فاييكانو":"https://media.api-sports.io/football/teams/728.png",
+  "يوفنتوس":"https://media.api-sports.io/football/teams/496.png",
+  "إنتر ميلان":"https://media.api-sports.io/football/teams/505.png",
+  "ميلان":"https://media.api-sports.io/football/teams/489.png",
+  "نابولي":"https://media.api-sports.io/football/teams/492.png",
+  "أتالانتا":"https://media.api-sports.io/football/teams/499.png",
+  "روما":"https://media.api-sports.io/football/teams/497.png",
+  "لاتسيو":"https://media.api-sports.io/football/teams/487.png",
+  "فيورنتينا":"https://media.api-sports.io/football/teams/502.png",
+  "بولونيا":"https://media.api-sports.io/football/teams/500.png",
+  "تورينو":"https://media.api-sports.io/football/teams/503.png",
+  "جنوى":"https://media.api-sports.io/football/teams/495.png",
+  "كالياري":"https://media.api-sports.io/football/teams/490.png",
+  "ساسولو":"https://media.api-sports.io/football/teams/488.png",
+  "هيلاس فيرونا":"https://media.api-sports.io/football/teams/504.png",
+  "بارما":"https://media.api-sports.io/football/teams/509.png",
+  "ليتشي":"https://media.api-sports.io/football/teams/867.png",
+  "كومو":"https://media.api-sports.io/football/teams/511.png",
+  "أودينيزي":"https://media.api-sports.io/football/teams/494.png",
+  "بيزا":"https://media.api-sports.io/football/teams/514.png",
+  "بايرن ميونخ":"https://media.api-sports.io/football/teams/157.png",
+  "بوروسيا دورتموند":"https://media.api-sports.io/football/teams/165.png",
+  "باير ليفركوزن":"https://media.api-sports.io/football/teams/168.png",
+  "لايبزيغ":"https://media.api-sports.io/football/teams/173.png",
+  "فرايبورغ":"https://media.api-sports.io/football/teams/160.png",
+  "إينتراخت فرانكفورت":"https://media.api-sports.io/football/teams/169.png",
+  "هوفنهايم":"https://media.api-sports.io/football/teams/167.png",
+  "فيردر بريمن":"https://media.api-sports.io/football/teams/162.png",
+  "يونيون برلين":"https://media.api-sports.io/football/teams/182.png",
+  "بوروسيا مونشنغلادباخ":"https://media.api-sports.io/football/teams/163.png",
+  "شتوتغارت":"https://media.api-sports.io/football/teams/172.png",
+  "أوغسبورغ":"https://media.api-sports.io/football/teams/170.png",
+  "كولن":"https://media.api-sports.io/football/teams/192.png",
+  "هامبورغ":"https://media.api-sports.io/football/teams/171.png",
+  "ماينز":"https://media.api-sports.io/football/teams/164.png",
+  "سانت باولي":"https://media.api-sports.io/football/teams/186.png",
+  "هايدنهايم":"https://media.api-sports.io/football/teams/191.png",
+  "فولفسبورغ":"https://media.api-sports.io/football/teams/161.png",
+  "باريس سان جيرمان":"https://media.api-sports.io/football/teams/85.png",
+  "مارسيليا":"https://media.api-sports.io/football/teams/81.png",
+  "موناكو":"https://media.api-sports.io/football/teams/91.png",
+  "ليل":"https://media.api-sports.io/football/teams/79.png",
+  "رين":"https://media.api-sports.io/football/teams/94.png",
+  "نيس":"https://media.api-sports.io/football/teams/84.png",
+  "لانس":"https://media.api-sports.io/football/teams/116.png",
+  "أولمبيك ليون":"https://media.api-sports.io/football/teams/80.png",
+  "ستراسبورغ":"https://media.api-sports.io/football/teams/95.png",
+  "بريست":"https://media.api-sports.io/football/teams/113.png",
+  "لوريان":"https://media.api-sports.io/football/teams/97.png",
+  "تولوز":"https://media.api-sports.io/football/teams/96.png",
+  "ميتز":"https://media.api-sports.io/football/teams/112.png",
+  "أنجيه":"https://media.api-sports.io/football/teams/778.png",
+  "لوهافر":"https://media.api-sports.io/football/teams/1073.png",
+  "أوكسير":"https://media.api-sports.io/football/teams/100.png",
+  "باريس إف سي":"https://media.api-sports.io/football/teams/109.png",
+  "غلطة سراي":"https://media.api-sports.io/football/teams/611.png",
+  "بودو غليمت":"https://media.api-sports.io/football/teams/750.png",
+  "سبورتينغ":"https://media.api-sports.io/football/teams/228.png",
+  "كريمونيزي":"https://media.api-sports.io/football/teams/517.png",
+};
 
-    // تجميع المباريات حسب البطولة
-    const categories = [...new Set(matchData.map(m => m.cat))];
+function ini(n){const w=n.trim().split(/\s+/);return w.length>=2?w[0][0]+w[w.length-1][0]:n.substring(0,2);}
+function logoHTML(n){
+    const s=LOGOS[n];
+    if(s) return `<img src="${s}" alt="${n}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" loading="lazy"><div class="team-badge-fallback" style="display:none">${ini(n)}</div>`;
+    return `<div class="team-badge-fallback">${ini(n)}</div>`;
+}
 
-    categories.forEach(cat => {
-        container.innerHTML += `<div class="section-label">${cat}</div>`;
-        
-        const catMatches = matchData.filter(m => m.cat === cat);
-        
-        catMatches.forEach(m => {
-            const matchTime = new Date();
-            matchTime.setHours(m.h, m.m, 0);
-            const endTime = new Date(matchTime.getTime() + 120 * 60000); 
+// ══════════════════════════════════════════════════════
+const MATCH_MS=110*60*1000;
+function computeStatus(m){
+    const now=Date.now(), st=new Date(m.start).getTime(), en=st+MATCH_MS;
+    if(m.status==="final") return {code:"ended",badge:"انتهت",cls:"badge-ended",order:2};
+    if(m.status==="in_progress"){
+        if(now>en) return {code:"ended",badge:"انتهت",cls:"badge-ended",order:2};
+        return {code:"live",badge:"مباشر",cls:"badge-live",order:0};
+    }
+    if(now>=st&&now<=en) return {code:"live",badge:"مباشر",cls:"badge-live",order:0};
+    if(now>en)           return {code:"ended",badge:"انتهت",cls:"badge-ended",order:2};
+    return {code:"upcoming",badge:"قادمة",cls:"badge-upcoming",order:1};
+}
+function liveMin(iso){return Math.min(Math.max(Math.floor((Date.now()-new Date(iso).getTime())/60000),1),90);}
 
-            let statusText, statusClass;
-            if (now < matchTime) {
-                statusText = "لم تبدأ"; statusClass = "upcoming";
-            } else if (now >= matchTime && now <= endTime) {
-                statusText = "مباشر"; statusClass = "live";
-            } else {
-                statusText = "انتهت"; statusClass = "ended";
-            }
+const AD=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+const AM=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+function dk(d){return`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
+function dayLabel(d){
+    const n=new Date(),y=new Date(n);y.setDate(n.getDate()-1);const tm=new Date(n);tm.setDate(n.getDate()+1);
+    if(dk(d)===dk(n))  return{text:"اليوم",cls:"today"};
+    if(dk(d)===dk(y))  return{text:"أمس",cls:"yesterday"};
+    if(dk(d)===dk(tm)) return{text:"غداً",cls:""};
+    return{text:`${AD[d.getDay()]} ${d.getDate()} ${AM[d.getMonth()]}`,cls:n>d?"past":""};
+}
+function fmtTime(iso){const d=new Date(iso),h=d.getHours(),m=d.getMinutes();return`${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'م':'ص'}`;}
 
-            const timeStr = `${m.h % 12 || 12}:${m.m === 0 ? '00' : m.m} ${m.h >= 12 ? 'م' : 'ص'}`;
+let AF='all';
+function setFilter(f,b){AF=f;document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();}
 
-            container.innerHTML += `
-                <a href="go:${m.go}" class="match-card">
+function render(){
+    const en=MATCHES.map(m=>({...m,_s:computeStatus(m)}));
+    let fl=en;
+    if(AF==='live')     fl=en.filter(m=>m._s.code==='live');
+    if(AF==='upcoming') fl=en.filter(m=>m._s.code==='upcoming');
+    if(AF==='ended')    fl=en.filter(m=>m._s.code==='ended');
+    if(['ucl','epl','liga','seria','bund','ligue'].includes(AF)) fl=en.filter(m=>m.league===AF);
+
+    const lc=en.filter(m=>m._s.code==='live').length;
+    const lb=document.getElementById('liveBtn');
+    if(lb) lb.innerHTML=lc>0?`🔴 مباشر <span class="live-count">${lc}</span>`:`🔴 مباشر`;
+
+    const byD={};
+    fl.forEach(m=>{const d=new Date(m.start),k=dk(d);if(!byD[k])byD[k]={date:d,leagues:{}};if(!byD[k].leagues[m.league])byD[k].leagues[m.league]=[];byD[k].leagues[m.league].push(m);});
+    const sD=Object.keys(byD).sort((a,b)=>byD[a].date-byD[b].date);
+
+    let html='';
+    if(!sD.length) html=`<div class="empty"><i class="fas fa-calendar-times"></i>لا توجد مباريات</div>`;
+
+    sD.forEach(k=>{
+        const{date,leagues}=byD[k];const dl=dayLabel(date);
+        html+=`<div class="date-group"><div class="date-header"><div class="date-pill ${dl.cls}">${dl.text}</div><div class="date-line"></div></div>`;
+        ['ucl','epl','liga','seria','bund','ligue'].forEach(lg=>{
+            if(!leagues[lg]) return;
+            const meta=LEAGUE_META[lg];
+            const lv=leagues[lg].filter(m=>m._s.code==='live').sort((a,b)=>new Date(a.start)-new Date(b.start));
+            const up=leagues[lg].filter(m=>m._s.code==='upcoming').sort((a,b)=>new Date(a.start)-new Date(b.start));
+            const ed=leagues[lg].filter(m=>m._s.code==='ended').sort((a,b)=>new Date(b.start)-new Date(a.start));
+            const ord=[...lv,...up,...ed];
+            html+=`<div class="league-label">${meta.flag} ${meta.label}${lv.length?'<span class="live-dot"></span>':''}</div>`;
+            ord.forEach((m,i)=>{
+                const s=m._s,isL=s.code==='live',isE=s.code==='ended';
+                const ch=getChannel(m);
+                const comm=getComm(m);
+                let ctr='';
+                if(isL||isE){
+                    ctr=`<div class="score-box">${m.sh} <span class="score-sep">-</span> ${m.sa}</div>`;
+                    if(isL) ctr+=`<span class="live-min">${liveMin(m.start)}'</span>`;
+                } else { ctr=`<div class="time-box">${fmtTime(m.start)}</div>`; }
+                html+=`<a href="go:${ch.go}" class="match-card${isL?' is-live':isE?' is-ended':''}" style="animation-delay:${i*0.04}s" data-q="${m.home} ${m.away} ${meta.label}">
                     <div class="match-top">
-                        <div class="team"><img src="${m.t1_img}"><span>${m.t1}</span></div>
-                        <div class="match-info">
-                            <div class="status-badge ${statusClass}">${statusText}</div>
-                            <div class="match-time">${timeStr}</div>
-                        </div>
-                        <div class="team"><img src="${m.t2_img}"><span>${m.t2}</span></div>
+                        <div class="team"><div class="team-logo-wrap">${logoHTML(m.home)}</div><div class="team-name">${m.home}</div></div>
+                        <div class="match-center"><div class="status-badge ${s.cls}">${s.badge}</div>${ctr}</div>
+                        <div class="team"><div class="team-logo-wrap">${logoHTML(m.away)}</div><div class="team-name">${m.away}</div></div>
                     </div>
                     <div class="match-meta">
-                        <span><i class="fas fa-tv"></i> ${m.ch}</span>
-                        <span><i class="fas fa-microphone"></i> ${m.comm}</span>
+                        <span><i class="fas fa-tv"></i> <span class="ch-name">${ch.name}</span></span>
+                        <span><i class="fas fa-microphone-alt"></i> <span class="comm-name">${comm}</span></span>
                     </div>
-                </a>
-            `;
+                </a>`;
+            });
         });
+        html+=`</div>`;
     });
+
+    html+=`<div class="update-bar"><i class="fas fa-circle" style="font-size:6px;color:var(--green);vertical-align:middle;margin-left:4px;"></i> آخر تحديث: ${new Date().toLocaleTimeString('ar-SA')}</div>`;
+    document.getElementById('root').innerHTML=html;
+    const q=document.getElementById('searchInput').value.toLowerCase().trim();
+    if(q) applySearch(q);
 }
 
-function searchMatches() {
-    let input = document.getElementById('searchInput').value.toLowerCase();
-    let cards = document.getElementsByClassName('match-card');
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].style.display = cards[i].innerText.toLowerCase().includes(input) ? "flex" : "none";
-    }
+function doSearch(){applySearch(document.getElementById('searchInput').value.toLowerCase().trim());}
+function applySearch(q){
+    if(!q){document.querySelectorAll('.match-card').forEach(c=>c.style.display='flex');document.querySelectorAll('.date-group').forEach(g=>g.style.display='');return;}
+    document.querySelectorAll('.match-card').forEach(c=>c.style.display=c.getAttribute('data-q').toLowerCase().includes(q)?'flex':'none');
+    document.querySelectorAll('.date-group').forEach(g=>g.style.display=[...g.querySelectorAll('.match-card')].some(c=>c.style.display!=='none')?'block':'none');
 }
 
-setInterval(renderMatches, 60000);
-renderMatches();
+render();
+setInterval(render,60000);
 </script>
 </body>
 </html>
